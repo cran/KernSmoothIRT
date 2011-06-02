@@ -1,0 +1,8 @@
+
+useDynLib(KernSmoothIRT)
+
+
+export(ksIRT)
+
+S3method(plot, ksIRT)
+S3method(print, ksIRT)
