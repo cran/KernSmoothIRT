@@ -6,20 +6,20 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 		if(missing(ylim)){ylim=-1}
 		if(missing(cex)){cex=.4}
-		if(missing(xlim)){xlim=c(min(axis),max(axis))}
+		if(missing(xlim)){xlim=c(min(OBJ$theta),max(OBJ$theta))}
 		if(missing(ylab)){ylab="Expected Item Score"}
 		if(missing(main)){main=-1}	
 		if(missing(alpha)){alpha<-.05}
 
 
 
-	plotit <- function(x,OBJ,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
+	plotit <- function(x,OBJ,alpha,axis,quants,scores,main, xlab,ylab,xlim,ylim,cex,...){
 
 
 	Estimate0<-OBJ$probs[which(OBJ$probs[,1]==x),]
 	maxitem<-max(Estimate0[,3])
 	Stderr0<-OBJ$Stderrs[which(OBJ$probs[,1]==x),]
-	resp0<-OBJ$responses[which(OBJ$responses[,1]==x),]
+	resp0<-OBJ$binres[which(OBJ$binres[,1]==x),]
 
 
 #	Estimate<-Estimate0[which(Estimate0[,3]==maxitem),]
@@ -51,7 +51,11 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 		if(ylim==-1){ylim=c(0,maxitem)}
 
 		plot(axis,Estimate,ylim=ylim,type="l",ylab=ylab,xlab=xlab,main=main,...)
-
+		
+		 
+		 
+		
+		
 		if(alpha){
 
 			SE<-qnorm(1-alpha/2)*Stderr
@@ -82,7 +86,7 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 	
 	par(ask=TRUE)
 
-	nada<-sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,cex,...)
+	nada<-sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants,scores=scores,main,xlab,ylab,xlim,ylim,cex,...)
 	
 
 }

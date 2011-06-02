@@ -1,7 +1,10 @@
 ksIRT <-
 function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,miss="category",NAweight=0,theta=NULL,nval=51,bandwidth="default",enumerate=list("norm",0,1),groups=FALSE){
 
-
+	if(miss=="omit"){
+		nasubs<-apply(responses,2,function(xxx)which(is.na(xxx)))
+	}
+	else{nasubs<-numeric(0)}
 	
 	nex <- nrow(responses);
 	nitems<-ncol(responses);
@@ -23,7 +26,10 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 
 	responses<-apply(responses,2,handlemiss,miss=miss)
 
-	optsbyitem<-apply(responses,2,unique)
+	optsbyitem<-list()
+	for(i in 1:ncol(responses)){
+		optsbyitem[[i]] <- unique(responses[,i])
+	}
 
 	fullresponses<-matrix(0,length(unlist(optsbyitem)),ncol=3+nex)
 
@@ -47,11 +53,24 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 		}
 
 
-	if(miss=="omit"){
+	fullresponses0<-fullresponses
+
+	if(miss=="omit" & sum(is.na(fullresponses[,2]))){
 		fullresponses<-fullresponses[-which(is.na(fullresponses[,2])),]	
 	}
 
+
+
+
+	
+
 	optitwgtresp<-make_mat(A=fullresponses,B=responses)
+	#print("optitwgt")
+	#print(optitwgtresp)
+
+
+	#return(list(responses,fullresponses,fullresponses0,optitwgtresp))
+
 	ncorrectex<-numeric()
 
 	for(i in 1:nex){
@@ -63,17 +82,17 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 
 	rankscores<-rank(ncorrectex,ties.method="random")
 
-	probrank<-eval(parse(text=(paste("qdist((rankscores-.5)/nex,",paste(unlist(enumerate[-1]),collapse=","),")",sep=""))))
+	probrank<-eval(parse(text=(paste("qdist((rankscores)/(nex+1),",paste(unlist(enumerate[-1]),collapse=","),")",sep=""))))
 
 	
 	quantstheta<-quantile(probrank,probs=c(.05,.25,.50,.75,.95))
-	quantsex<-quantile(ncorrectex,probs=c(.05,.25,.50,.75,.95))
+
 	
 
 	if(is.null(theta)){
 
-			lim1<-qdist(1/nex,enumerate[[2]],enumerate[[3]])
-			lim2<-qdist((nex-1)/nex,enumerate[[2]],enumerate[[3]])
+			lim1<-qdist(1/(nex+1),enumerate[[2]],enumerate[[3]])
+			lim2<-qdist(nex/(nex+1),enumerate[[2]],enumerate[[3]])
 			theta<-seq(from=lim1, to=lim2, length.out=nval);
 
 		}
@@ -89,7 +108,7 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 	
 
 
-	if(bandwidth=="CV"){		
+	if(bandwidth[1]=="CV"){		
 		
 		h<-numeric()
 		h0<-numeric()
@@ -105,15 +124,26 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 		}
 	}
 
-	else if(bandwidth=="default"){
-		h<-rep(1.1*nex**(-.2),nrow(optitwgtresp))
-		h0<-rep(h[1],nitems)
+	else if(bandwidth[1]=="default"){
+		if(enumerate[[1]]=="norm"){
+			sighat <- enumerate[[3]]			
+			
+		}
+		else{
+			sighat <- sd(probrank)
+		}		
+			h<-rep(1.06*sighat*nex^(-.2),nrow(optitwgtresp))
+			h0<-rep(h[1],nitems)
 	}
 
 	else{
 		torep<-table(optitwgtresp[,1])
 		h0<-bandwidth;
 		h<-numeric()
+
+		#print(optitwgtresp)
+		#print(h0)
+		#print(torep)
 
 		for(i in 1:nitems){
 			h<-c(h,rep(h0[i],torep[i]))
@@ -154,10 +184,29 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 
 	}
 
+	evals<-apply(Probs[,-c(1:3)],2,function(x)sum(x*Probs[,3]))
+	quantsex<-quantile(ncorrectex,probs=c(.05,.25,.50,.75,.95))
 
-	toret<-list(responses=optitwgtresp,probs=Probs,Stderrs=Stderrs,scoresbysubject=ncorrectex,itemlabels=labs,theta=theta,
-quantiles=quantsex,quantilestheta=quantstheta, scoresattheta=scoresattheta,SmthWgts=SmthWgts,scale=scale,enumerate=enumerate,
-probrank=probrank,band=h0,nitems=nitems,nex=nex,nval=nval,subsets=subsets,groups=grps)
+
+	this<-cbind(optitwgtresp[,1],t(apply(optitwgtresp,1,function(xxx)xxx[-c(1:3)]*xxx[3])))
+	corr<-numeric(nitems)
+
+
+	for(i in 1:nitems){
+		thisit<-which(this[,1]==i)
+		summed<-apply(this[thisit,-1],2,sum)	
+		if(length(nasubs)>0){
+			nahere<-nasubs[[i]]
+			summed[nahere]<-NA
+		}
+
+		corr[i]<-cor(ncorrectex,summed,use="complete.obs")		
+	}
+
+
+	toret<-list(binres=optitwgtresp,probs=Probs,Stderrs=Stderrs,scoresbysubject=ncorrectex,itemlabels=labs,theta=theta,
+quantiles=quantsex,quantilestheta=quantstheta,SmthWgts=SmthWgts,scale=scale,enumerate=enumerate,
+probrank=probrank,band=h0,nitems=nitems,nex=nex,nval=nval,subsets=subsets,groups=grps,expectedscores=evals,pserial=corr)
 
 
 	class(toret)<-"ksIRT"

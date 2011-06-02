@@ -23,8 +23,12 @@ See ksIRT() help page for more information and examples on how to use these data
 }
 \source{
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
-Ramsay JO (1991). Kernel Smoothing Approaches to Nonparametric Item Characteristic
-   Curve Estimation. Psychometrika, 56(4), 611 to 630.
+
+Ramsay JO (2000). TestGraf: A program for the graphical analysis of multiple choice test and questionnaire data." \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+
+Beck, A. T., Rush, A., Shaw, B., & Emery, G. (1979)
+Cognitive Therapy of Depression, New York: Guilford Press.
+
 }
 
 \keyword{datasets}

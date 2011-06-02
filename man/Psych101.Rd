@@ -8,9 +8,7 @@ Psych101 key and responses
 
 }
 \description{
-Responses and key to Psych 101 exam. The key is \code{Psychkey}, the responses are \code{Psychresponses}. Key is a numeric vector with the correct responses for each of the 100 questions on the exam. 
-Responses is a numeric matrix with each students answers to each question. Each column represents a question and each row represents a student.
-There are 379 students who took the exam, thus, \code{Psychresponses} has 379 rows and 100 columns.
+Responses and key to Psych 101 exam. The key is \code{Psychkey}, the responses are \code{Psychresponses}.\code{Psychkey} is a numeric vector with the correct responses for each of the 100 questions on the exam. \code{Psychresponses} is a numeric matrix with each students answers to each question. Each column represents a question and each row represents a student. The data came from a multiple-choice examination given to 379 students in an introductory course in psychology in the Christmas exam period of 1989 at McGill. The test itself consisted of 100 multiple-choice items, each having four response options. The data were collected as part of a number of studies conducted by Prof. David Zuroff.
 }
 \usage{
 data(Psych101)
@@ -22,8 +20,12 @@ Psychresponses
 See ksIRT() help page for more information and examples on how to use these data with the \pkg{KernSmoothIRT} package.
 }
 \source{
-Ramsay JO (1991). Kernel Smoothing Approaches to Nonparametric Item Characteristic
-   Curve Estimation. Psychometrika, 56(4), 611 to 630.
+Ramsay JO. TestGraf: A program for the graphical analysis of multiple choice test and questionnaire data." \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+
+Ramsay JO, Abrahamowicz M (1989). Binomial
+regression with monotone splines: A psychometric application." Journal of the American Statistical
+Association, 84(408), 906-915.
+
 }
 
 

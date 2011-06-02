@@ -1,7 +1,6 @@
 print.ksIRT <-
 function(x,...){
-	toout<-as.data.frame(biserialcorr(x))
-	colnames(toout)<-c("Item","Correlation")
+	toout<-data.frame(Item=1:x$nitems,Correlation=x$pserial)
 	print(toout)
 }
 

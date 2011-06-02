@@ -36,7 +36,7 @@ Inputcheck<-function(responses,key,scale,labs,weights,miss,theta,bandwidth,nitem
 		print('labs must be of length items or left blank')
 		return(0)
 	}
-	if(bandwidth != "default" & bandwidth !="CV" & length(bandwidth) != nitems){
+	if(bandwidth[1] != "default" & bandwidth[1] !="CV" & length(bandwidth) != nitems){
 		print('bandwidth much either be: "CV", "default", a vector of length equal to then number of items or left blank')
 		return(0)
 	}

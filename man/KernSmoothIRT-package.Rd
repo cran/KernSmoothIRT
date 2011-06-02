@@ -2,7 +2,7 @@
 \alias{KernSmoothIRT}
 \docType{package}
 \title{KernSmoothIRT Package}
-\description{This package fits non-parametric item and option characteristic curves using kernel smoothing. It allows for optimal selection of the smoothing bandwidth using cross-validation and a variety of exploratory plotting tools.
+\description{This package fits nonparametric item and option characteristic curves using kernel smoothing. It allows for optimal selection of the smoothing bandwidth using cross-validation and a variety of exploratory plotting tools.
 }
 \details{
 \tabular{ll}{

@@ -3,17 +3,21 @@ function(x, plottype = "OCC", items="all", subjects, axistype = "distribution", 
 
 
 	if(items[1]=="all"){items<-1:x$nitems}
-
+	if(missing(xlab)){xlab0<-"Scores"}
+	if(plottype=="expected"){axistype="distribution"}
+	if(plottype=="expectedDIF"){axistype="scores"}
 
 	if(axistype=='distribution'){
+
 		axis<-x$theta
 		quants<-x$quantilestheta
 		if(missing(xlab)){
-			xlab<-paste(simpleCap(x$enumerate[[1]]), "Quantiles",sep=" ")
+			xlab<-paste(simpleCap(x$enumerate[[1]]), paste(unlist(x$enumerate[-1]),collapse=" "), "Quantiles",sep=" ")
 		}
 	}
 	else{
-		axis<-x$scoresattheta
+
+		axis<-x$expectedscores
 		quants<-x$quantiles
 		if(missing(xlab)){	
 			xlab<-"Expected Score"
@@ -24,7 +28,7 @@ function(x, plottype = "OCC", items="all", subjects, axistype = "distribution", 
 	if(plottype=="density"){densityplot(x,xlim,ylim,xlab,ylab,main,...)}
 	else if(plottype=="ICC"){ICCplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,cex,...)}
 	else if(plottype=="OCC"){OCCplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,...)}
-	else if(plottype=="expected"){expectedplot(x,axis=axis,quants=quants, main, xlim,ylim, xlab, ylab, ...)}
+	else if(plottype=="expected"){expectedplot(x,axis=axis,quants=x$quantilestheta, main, xlim,ylim, xlab, ylab, ...)}
 	else if(plottype=="sd"){sdplot(x,axis=axis,quants=quants,main, xlab, ylab,...)}
 	else if(plottype=="info"){IICplot(x,items,axis=axis,quants=quants,test=FALSE,noout=FALSE, main, xlab, ylab, ...)}
 	else if(plottype=="testinfo"){IICplot(x,items,axis=axis,quants=quants,test=TRUE,noout=FALSE, main, xlab, ylab, ...)}
@@ -38,8 +42,8 @@ function(x, plottype = "OCC", items="all", subjects, axistype = "distribution", 
 	OCCDIFplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,...)
 	}
 	else if(plottype=="PCA"){PCAplot(x, ...)}
-	else if(plottype=="expectedDIF"){expectedDIFplot(x,axis=x$scoresattheta,quants=x$quantiles, main, xlim,ylim, xlab, ylab, ...)}
-	else if(plottype=="densityDIF"){densityDIFplot(x,xlim,ylim,xlab,ylab,main,...)}
+	else if(plottype=="expectedDIF"){expectedDIFplot(x,axis=axis,quants=quants, main, xlim,ylim, xlab, ylab, ...)}
+	else if(plottype=="densityDIF"){densityDIFplot(x,xlim,ylim,xlab=xlab0,ylab,main,...)}
 	else{print("plottype not recognized")}
 	
 }

@@ -28,8 +28,13 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 			EstimateFULL<-apply(Estimate1,2,sum)
 
 
-		plot(c(min(axis),max(axis)),c(0,max(OBJ$probs[which(OBJ$probs[,1]==x),])),type="n",xlim=xlim, ylim=ylim ,xlab=xlab,ylab=ylab,main = main,...)
+			
 
+		plot(c(min(axis),max(axis)),c(0,max(OBJ$probs[which(OBJ$probs[,1]==x),])),type="n",xlim=xlim, ylim=ylim ,xlab=xlab,ylab=ylab,main = main,...)
+		
+	
+
+		
 		lines(axis,EstimateFULL,col="black",lwd=1.5,...)
 
 		ngrps<-length(OBJ$groups)
@@ -47,7 +52,7 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 			dbins<-cut(cgrp$probrank,breaks=c(-999,cgrp$theta[-length(cgrp$theta)],999),labels=FALSE)
 
-			resp0<-cgrp$responses[which(cgrp$responses[,1]==x),]
+			resp0<-cgrp$binres[which(cgrp$binres[,1]==x),]
 			respit1<-apply(resp0[,-c(1:3)],2,function(x)x*resp0[,3])
 			respit<-apply(respit1,2,sum)
 			#respit<-resp0[which(resp0[,3]==maxitem),-c(1:3)]

@@ -35,7 +35,7 @@ function(OBJ,axis,subjects,quants,main,xlab,ylab,...){
 		for(j in 1:OBJ$nitems){
 
 
-		responses<-OBJ$responses[which(OBJ$responses[,1]==j),i+3]
+		responses<-OBJ$binres[which(OBJ$binres[,1]==j),i+3]
 		probs<-OBJ$probs[which(OBJ$probs[,1]==j),]
 	
 

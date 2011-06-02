@@ -13,7 +13,6 @@ function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 		if(main==-1){main=paste("Item: ",OBJ$itemlabels[x],"\n")}
 
 
-
 		plot(1,ylim=ylim,main=main,xlim=xlim,type="l",ylab=ylab,xlab=xlab,...)
 
 		IRFlines<-OBJ$probs[which(OBJ$probs[,1]==x),]

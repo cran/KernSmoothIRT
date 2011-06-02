@@ -5,7 +5,7 @@ function(x,xlim,ylim,xlab,ylab,main,...){
 
 
 		if(missing(main)){main="Observed Score Distribution\n"}
-		if(missing(xlab)){xlab="Score"}
+		
 		if(missing(xlim)){xlim=c(0,max(x$scoresbysubject))}
 		
 		if(missing(ylab)){ylab="Density of Score"}
@@ -13,7 +13,7 @@ function(x,xlim,ylim,xlab,ylab,main,...){
 
 		ymax<-max(density(x$scoresbysubject,from=0,to=max(x$scoresbysubject))$y)
 
-		if(missing(ylim)){ylim=c(0,ymax)}
+		if(missing(ylim)){ylim=c(0,ymax+.02)}
 
 
 		plot(c(0,max(x$scoresbysubject)),c(0,ymax),type="n",xlim=xlim, ylim=ylim ,xlab=xlab,ylab=ylab,main = main,...)
@@ -34,7 +34,7 @@ function(x,xlim,ylim,xlab,ylab,main,...){
 		
 		}
 
-		legend(0, ymax,x$groups, cex=0.8, col=plot_colors[1:ngrps],lty=line_type[1:ngrps], lwd=2, bty="n");
+		legend(0, ymax+.02,x$groups, cex=0.8, col=plot_colors[1:ngrps],lty=line_type[1:ngrps], lwd=2, bty="n");
 
 		axis(3,at=x$quantiles, lab=labels(x$quantiles),tck=0)
 		abline(v=x$quantiles,col="blue",lty=2)

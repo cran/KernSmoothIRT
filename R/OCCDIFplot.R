@@ -20,10 +20,16 @@ OCCDIFplot <-function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 		for(i in 1:nopts){
 			
 			if(main0==-1){main=paste("Item: ",OBJ$itemlabels[x]," ","Option: ",ifelse(opts[i]==-1,"NA",opts[i]),"\n\n")}
-			plot(1,ylim=ylim,main=main,xlim=xlim,type="l",ylab=ylab,xlab=xlab,...)
+		
 
+
+				plot(1,ylim=ylim,main=main,xlim=xlim,type="l",ylab=ylab,xlab=xlab,...)
+	
+			
+			
+			
 			IRFlineBIG<-OBJ$probs[which(OBJ$probs[,1]==x & OBJ$probs[,2]==opts[i]),]
-			lines(axis,IRFline[-c(1:3)],col="black",lwd=1.5,...)
+			lines(axis,IRFlineBIG[-c(1:3)],col="black",lwd=1.5,...)
 			
 			for(j in 1:ngrps){
 
@@ -69,7 +75,7 @@ OCCDIFplot <-function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 
 	par(ask=TRUE)
 
-	nada<-sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants,main,xlim,ylim,xlab,ylab,...)
+	nada<-sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants, main,xlim,ylim,xlab,ylab,...)
 	
 
 }
