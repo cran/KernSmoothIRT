@@ -17,10 +17,10 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 
 		maxitem<-max(OBJ$probs[which(OBJ$probs[,1]==x),3])
-
+		minitem<-min(OBJ$probs[which(OBJ$probs[,1]==x),3])
 
 		if(main==-1){main=paste("Item: ",OBJ$itemlabels[x],"\n")}
-		if(ylim==-1){ylim=c(0,maxitem)}
+		if(ylim==-1){ylim=c(minitem,maxitem)}
 
 
 			Estimate0<-OBJ$probs[which(OBJ$probs[,1]==x),]
@@ -86,8 +86,8 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 				SE<-try(qnorm(1-alpha/2)*Stderr)
 	
 
-				confhigh<-Estimate+SE
-				conflow<-try(sapply(Estimate-SE,function(x)max(x,0)))
+				confhigh<-try(sapply(Estimate+SE,function(x)min(x,maxitem)))
+				conflow<-try(sapply(Estimate-SE,function(x)max(x,minitem)))
 
 
 				try(lines(axis,confhigh,lty=2,col=plot_colors[i]))

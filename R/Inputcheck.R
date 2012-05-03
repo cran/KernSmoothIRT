@@ -3,12 +3,6 @@ Inputcheck<-function(responses,key,scale,labs,weights,miss,theta,bandwidth,nitem
 
 
 
-	if(groups[1]!=FALSE & length(groups)!=nex){
-		print('groups is either left blank or a vector of length equal to the number of subjects with the different subgroup designations for each subject.')
-		return(0)		
-
-	}
-
 
 	if(scale[1]!="nominal" & scale[1]!="ordinal" & length(scale)!=nitems){
 		print('scale is either "nominal" for all nominal, "ordinal" for all ordinal or a vector of length nitems with 1s for nominal and 0s for ordinal')

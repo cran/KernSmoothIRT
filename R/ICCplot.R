@@ -18,6 +18,7 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 	Estimate0<-OBJ$probs[which(OBJ$probs[,1]==x),]
 	maxitem<-max(Estimate0[,3])
+	minitem<-min(Estimate0[,3])
 	Stderr0<-OBJ$Stderrs[which(OBJ$probs[,1]==x),]
 	resp0<-OBJ$binres[which(OBJ$binres[,1]==x),]
 
@@ -27,7 +28,7 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 	Estimate1<-apply(Estimate0[,-c(1:3)],2,function(x)x*Estimate0[,3])
 	Estimate<-apply(Estimate1,2,sum)
-
+	#Estimate <- sapply(Estimate,function(x) min(0,max(1,x)));
 
 	Stderr1<-apply(Stderr0[,-c(1:3)],2,function(x)x*Stderr0[,3])
 	Stderr<-apply(Stderr1,2,sum)
@@ -48,7 +49,7 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 
 		if(main==-1){main=paste("Item: ",OBJ$itemlabels[x],"\n")}
-		if(ylim==-1){ylim=c(0,maxitem)}
+		if(ylim==-1){ylim=c(minitem,maxitem)}
 
 		plot(axis,Estimate,ylim=ylim,type="l",ylab=ylab,xlab=xlab,main=main,...)
 		
@@ -62,8 +63,9 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 			
 			confhigh<-sapply(Estimate+SE,function(x)min(x,maxitem));
-			conflow<-sapply(Estimate-SE,function(x)max(x,0));
-
+			conflow<-sapply(Estimate-SE,function(x)max(x,minitem));
+			#print(Estimate-SE)
+			#print(conflow)
 			
 		
 
@@ -80,13 +82,15 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 		
 
 		box()
+
+		return(Estimate)
 		
 	}
 
 	
 	par(ask=TRUE)
 
-	nada<-sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants,scores=scores,main,xlab,ylab,xlim,ylim,cex,...)
+	sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants,scores=scores,main,xlab,ylab,xlim,ylim,cex,...)
 	
 
 }

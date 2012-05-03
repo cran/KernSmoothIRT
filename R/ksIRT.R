@@ -1,11 +1,12 @@
 ksIRT <-
 function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,miss="category",NAweight=0,theta=NULL,nval=51,bandwidth="default",enumerate=list("norm",0,1),groups=FALSE){
 
+
 	if(miss=="omit"){
-		nasubs<-apply(responses,2,function(xxx)which(is.na(xxx)))
+        if(groups[1] != FALSE){ groups <- groups[complete.cases(responses)]}
+		responses <- na.omit(responses)
 	}
-	else{nasubs<-numeric(0)}
-	
+
 	nex <- nrow(responses);
 	nitems<-ncol(responses);
 
@@ -40,10 +41,14 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 
 					fullresponses[crow,1:2]<-c(i,optsbyitem[[c(i,j)]])
 
+	
+	
+					
 					if(!is.null(weights)){	
 						fullresponses[crow,3]<-getweight(item=i,option=fullresponses[crow,2],weights=weights[[i]],NAweight=NAweight)
 					}
 					if(!is.null(key)){
+			
 						fullresponses[crow,3]<-getweight(item=i,option=fullresponses[crow,2],scale=scale[i],key=key[i],NAweight=NAweight)}						
 
 				
@@ -55,21 +60,10 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 
 	fullresponses0<-fullresponses
 
-	if(miss=="omit" & sum(is.na(fullresponses[,2]))){
-		fullresponses<-fullresponses[-which(is.na(fullresponses[,2])),]	
-	}
-
-
-
 
 	
 
 	optitwgtresp<-make_mat(A=fullresponses,B=responses)
-	#print("optitwgt")
-	#print(optitwgtresp)
-
-
-	#return(list(responses,fullresponses,fullresponses0,optitwgtresp))
 
 	ncorrectex<-numeric()
 
@@ -118,6 +112,7 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 			
 			mat<-optitwgtresp[which(optitwgtresp[,1]==i),-c(1:3)]	
 			#h0[i]<-CrossV3(answered=mat,theta=theta,probrank=probrank,kernel=kernel)
+			print(paste("Determining Smoothing Bandwidth Item: ",i,sep=""))
 			h0[i]<-CrossV(answered0=mat,probrank0=probrank,kernel0=kernel)
 			h<-c(h,rep(h0[i],torep[i]))
 
@@ -171,6 +166,8 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 		SmthWgts[i,]<-retval[["weights"]]
 	}
 
+	
+	
 
 
 	Probs<-cbind(optitwgtresp[,c(1:3)],ICC)
@@ -192,21 +189,41 @@ function(responses,key=NULL,scale=NULL,kernel="gaussian",labs=NULL,weights=NULL,
 	corr<-numeric(nitems)
 
 
+	Probs0 <- numeric(0)
+	
 	for(i in 1:nitems){
 		thisit<-which(this[,1]==i)
 		summed<-apply(this[thisit,-1],2,sum)	
-		if(length(nasubs)>0){
-			nahere<-nasubs[[i]]
-			summed[nahere]<-NA
-		}
+
 
 		corr[i]<-cor(ncorrectex,summed,use="complete.obs")		
+	
+	
+		Probs00 <- cbind(Probs[Probs[,1]==i,1:3],apply(Probs[Probs[,1]==i,-c(1:3)],2,function(x)x/sum(x)))
+		Probs0<-rbind(Probs0,Probs00)
+	
+	
 	}
 
 
-	toret<-list(binres=optitwgtresp,probs=Probs,Stderrs=Stderrs,scoresbysubject=ncorrectex,itemlabels=labs,theta=theta,
+	LIK <- list(nex)	
+	MLE <- numeric(nex)
+	for(i in 1:nex){
+		responses <- optitwgtresp[, i + 3]
+		GOOD <- Probs0[,-c(1:3)] * responses
+		GOOD[GOOD==0] <- 1
+		
+		LIK[[i]] <- apply(GOOD,2,prod)
+		
+		LIK[[i]] <- LIK[[i]]/max(LIK[[i]])
+		MLE[i] <- evals[which.max(LIK[[i]])]
+
+	}
+
+
+	toret<-list(binres=optitwgtresp,probs=Probs0,Stderrs=Stderrs,scoresbysubject=ncorrectex,itemlabels=labs,theta=theta,
 quantiles=quantsex,quantilestheta=quantstheta,SmthWgts=SmthWgts,scale=scale,enumerate=enumerate,
-probrank=probrank,band=h0,nitems=nitems,nex=nex,nval=nval,subsets=subsets,groups=grps,expectedscores=evals,pserial=corr)
+probrank=probrank,band=h0,nitems=nitems,nex=nex,nval=nval,subsets=subsets,groups=grps,expectedscores=evals,pserial=corr, subMLE = MLE, subLIK = LIK)
 
 
 	class(toret)<-"ksIRT"

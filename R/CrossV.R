@@ -21,7 +21,8 @@ function(answered0,probrank0,kernel0){
 	CVstat<-function(x){
 		#cat("NEXT","\n",file="output.txt",append=TRUE)	
 		band<-x
-		return(sum(sapply(1:length(probrank0),Calc,band=band)))
+		CVsamp <- sample(1:length(probrank0),round(length(probrank0)/10),replace=FALSE)
+		return(sum(sapply(CVsamp,Calc,band=band)))
 	}
 
 

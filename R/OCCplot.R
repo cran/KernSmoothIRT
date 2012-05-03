@@ -20,17 +20,17 @@ function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 
 		for(i in 1:nrow(IRFlines)){
 			if(OBJ$scale[x]==1){
-				if(IRFlines[i,3]==1){colortouse<-"green"}
-				else{colortouse<-"red"}
+				if(IRFlines[i,3]==1){colortouse<-"blue"; lwidth <-2}
+				else{colortouse<-"red"; lwidth <-1}
 			}
 			else{
-				colortouse<-"black"
+				colortouse<-"black"; lwidth <-1;
 			}
 			
-			lines(axis,IRFlines[i,-c(1:3)],col=colortouse)
+			lines(axis,IRFlines[i,-c(1:3)],col=colortouse, lwd=lwidth)
 			word<-ifelse(IRFlines[i,2]==-1,"NA",as.character(IRFlines[i,2]))
 			wordloc<-round(runif(1,min=10,max=OBJ$nval-10))
-			text(axis[wordloc],IRFlines[i,wordloc],word)
+			text(axis[wordloc],IRFlines[i,wordloc],word,cex=.7)
 
 			## Cint
 			if(alpha){

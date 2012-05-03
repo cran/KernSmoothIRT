@@ -1,6 +1,8 @@
 SEplot <-
 function(OBJ, axis, quants, main, xlab, ylab, ...){
 	
+	axis <- axis[-1]
+
 	inf<-IICplot(OBJ,axis=axis, quants=quants, test=TRUE,noout=TRUE)
 
 

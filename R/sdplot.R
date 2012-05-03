@@ -9,7 +9,7 @@ function(OBJ, quants, axis, main, xlab,ylab,...){
 	Testsd<-sqrt(Testvar)
 
 	if(missing(main)){main="Test Standard Deviation\n"}
-	if(missing(ylab)){ylab="Standard Deviations\n"}
+	if(missing(ylab)){ylab="Standard Deviations"}
 
 	plot(axis,Testsd,type="l",main=main,xlab=xlab,ylab=ylab,...)
 

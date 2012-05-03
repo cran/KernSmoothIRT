@@ -3,14 +3,14 @@
 \alias{plot.ksIRT}
 \alias{print.ksIRT}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ksIRT - kernel smoothing in Item Reponse Theory
+\title{ksIRT - kernel smoothing in Item Response Theory
 }
 \description{
 This function fits nonparametric item and options characteristic curves using kernel smoothing techniques. It allows for a variety of exploratory plotting tools.
 }
 \usage{
 ksIRT(responses, key = NULL, scale = NULL, kernel="gaussian", labs = NULL, weights = NULL, miss = "category", NAweight=0, theta = NULL, nval=51, bandwidth = "default", enumerate=list("norm",0,1), groups=FALSE)
-\method{plot}{ksIRT}(x, plottype = "OCC", items="all", subjects, axistype = "distribution", alpha, main, xlab, ylab, xlim, ylim, cex, ...)
+\method{plot}{ksIRT}(x, plottype = "OCC", items="all", subjects, axistype = "scores", alpha, main, xlab, ylab, xlim, ylim, cex, ...)
 \method{print}{ksIRT}(x,...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -55,10 +55,10 @@ The default value, \code{miss="category"}, treats missing responses as an option
 
 \code{miss="random.multinom"} substitutes another option value by sampling from the non-missing responses to the same item with each option's probability of selection equal to that option's relative frequency amongst the other responses.
 
-\code{miss="omit"} omits missing observations from the analysis. In the computation of point polyserial correlation, pairwise deletion is used.
+\code{miss="omit"}  excludes from the analysis all the subjects with at least one omitted response.
 }
 \item{NAweight}{
-A scalar numeric weight given to missing responses. The default is zero.
+A scalar numeric weight given to missing responses when \code{miss=category}. The default is zero.
 }
   \item{theta}{
 %%     ~~Describe \code{theta} here~~
@@ -94,7 +94,7 @@ option characteristic curves are plotted. See details section below for the type
 
 \item{subjects}{A vector specifying the subjects to plot. This option is only used for credibility plots \code{plottype="credibility"}.}
 
-\item{axistype}{A character string specifying the display variable to be used on the x-axis. The default is \code{axistype="distribution"}, which uses the quantiles of the distribution specified in \code{enumerate}. The alternaive is \code{axistype="scores"} which displays the expected score.}
+\item{axistype}{A character string specifying the display variable to be used on the x-axis. The default is \code{axistype="distribution"}, which uses the quantiles of the distribution specified in \code{enumerate}. The alternative is \code{axistype="scores"} which displays the expected score.}
 
 \item{main}{Optional character string title. See plot().}
 
@@ -277,30 +277,68 @@ A vector indicating the different groups specified by \code{groups}.
 \item{pserial}{
 The point polyserial correlation for each item.
 }
+\item{subLIK}{
+The normalized likelihood for each subject evaluated at \code{theta}.
+}
+\item{subLIK}{
+The maximum likelihood estimate for the expected total score of each subject.
+}
 }
 
 
 
 \examples{
 
+### Nominal Multiple Choice Data
 data(Psych101)
-#Psych1 <- ksIRT(responses=Psychresponses, key=Psychkey, scale="nominal",  bandwidth="CV")
+
 Psych1 <- ksIRT(responses=Psychresponses, key=Psychkey, scale="nominal")
 
-plot(Psych1, plottype="ICC")
-plot(Psych1, plottype="OCC")
-plot(Psych1, plottype="credibility", axistype="scores")
-plot(Psych1, plottype="testinfo", axistype="scores")
+plot(Psych1, plottype="ICC",items=1:5)
+plot(Psych1, plottype="OCC",items=1:5)
+plot(Psych1, plottype="credibility",subjects=1:5)
+plot(Psych1, plottype="testinfo")
 plot(Psych1, plottype="PCA")
 plot(Psych1, plottype="triangle", items=1:5)
 plot(Psych1, plottype="tetrahedron", items=6:10)
+plot(Psych1, plottype="density")
+plot(Psych1, plottype="reliability")
+plot(Psych1, plottype="se")
 
 
+### Ordinal Survey Data
 data(BDI)
-BDI1 <- ksIRT(responses=BDIresponses, key=BDIkey, scale="ordinal", groups=c(rep('Young',121), rep('Old',121)))
+BDI1 <- ksIRT(responses=BDIresponses, key=BDIkey, scale="ordinal", bandwidth="CV", miss="omit")
 
-plot(BDI1, plottype="ICCDIF", cex=.8)
-plot(BDI1, plottype="expectedDIF")
+
+plot(BDI1, plottype="expected")
+plot(BDI1, plottype="sd")
+plot(BDI1, plottype="info",items=1:5)
+plot(BDI1, plottype="density", ylim=c(0,0.1))
+
+
+### Ordinal Survey Data Comparison by Gender
+data(HIV)
+HIVres <- ksIRT(HIV[,-(1:3)], key=HIVkey, scale="ordinal", miss="omit")
+HIVres
+
+plot(HIVres, plottype="OCC", item=9)
+plot(HIVres, plottype="ICC", item=9)
+plot(HIVres, plottype="tetrahedron", item=9)
+
+DIF1 <- ksIRT(res=HIV[,-(1:3)], key=HIVkey, scale="ordinal", groups=as.character(HIV$GENDER), miss="omit")
+
+plot(DIF1, plottype="expectedDIF", lwd=2)
+plot(DIF1, plottype="densityDIF", lwd=2)
+
+plot(DIF1, plottype="OCCDIF", item=3)
+plot(DIF1, plottype="ICCDIF", cex=0.5, item=3)
+
+DIF2 <- ksIRT(res=HIV[,-(1:3)], key=HIVkey, scale="ordinal", groups=as.character(HIV$SITE), miss="omit")
+plot(DIF2, plottype="expectedDIF", lwd=2)
+plot(DIF2, plottype="densityDIF", lwd=2)
+
+plot(DIF2, plottype="ICCDIF", item=c(6,11))
 
 
 ################### Aditional Examples ###############################
@@ -311,30 +349,6 @@ Psych3 <- ksIRT(Psychresponses, key=Psychkey, kernel="uniform", scale="nominal")
 
 ## Alternative enumeration
 Psych4 <- ksIRT(Psychresponses, key=Psychkey, scale="nominal", enumerate=list("beta",2.5,2.5))
-
-
-
-
-## Overall expected value
-plot(Psych1, plottype="expected")
-
-## Overall standard deveviation
-plot(Psych1, plottype="sd")
-
-## Overall density
-plot(Psych1, plottype="density")
-
-## Item information
-plot(Psych1, plottype="info")
-
-## Reliability
-plot(Psych1, plottype="reliability")
-
-## Standard Error
-plot(Psych1, plottype="se")
-
-## Density (DIF)
-plot(BDI1, plottype="densityDIF", ylim=c(0,0.1))
 
 
 }
