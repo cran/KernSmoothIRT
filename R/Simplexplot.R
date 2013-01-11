@@ -7,7 +7,7 @@ function(OBJ,items,main, ...){
 
 	plotit<-function(x,OBJ,main,...){
 
-		Torank<-OBJ$probs[which(OBJ$probs[,1]==x),]
+		Torank<-OBJ$OCC[which(OBJ$OCC[,1]==x),]
 		
 		order<-rank(apply(Torank[,-c(1:3)],1,max))
 		order<-max(order)+1-order	
@@ -32,7 +32,7 @@ function(OBJ,items,main, ...){
 		
 		ToPlot<-ToPlot/apply(ToPlot,1,sum)
 		
-		pts<-length(OBJ$theta)
+		pts<-length(OBJ$evalpoints)
 		onethird<-ceiling(pts/3)
 
 		if(main==-1){main=paste("Item : ",OBJ$itemlabels[[x]])}

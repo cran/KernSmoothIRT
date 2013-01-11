@@ -2,7 +2,7 @@ sdplot <-
 function(OBJ, quants, axis, main, xlab,ylab,...){
 
 	
-	Testvar <- apply(OBJ$probs[,-c(1:3)],2,function(x)sum(x*OBJ$probs[,3]**2 - (x*OBJ$probs[,3])**2))
+	Testvar <- apply(OBJ$OCC[,-c(1:3)],2,function(x)sum(x*OBJ$OCC[,3]**2 - (x*OBJ$OCC[,3])**2))
 
 
 

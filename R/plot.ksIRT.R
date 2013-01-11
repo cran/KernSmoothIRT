@@ -1,50 +1,48 @@
 plot.ksIRT <-
-function(x, plottype = "OCC", items="all", subjects, axistype = "scores", alpha, main, xlab, ylab, xlim, ylim, cex,...){
+function(x, plottype = c("OCC","EIS","density","expected","sd","triangle","tetrahedron","RCC","EISDIF","OCCDIF","PCA","expectedDIF","densityDIF"), items= "all", subjects, axistype = c("scores","distribution"), alpha, main, xlab, ylab, xlim, ylim, cex,...){
 
-
-	if(items[1]=="all"){items<-1:x$nitems}
+	plottype <- match.arg(arg = plottype, choices = c("OCC","EIS","density","expected","sd","triangle","tetrahedron","RCC","EISDIF","OCCDIF","PCA","expectedDIF","densityDIF"))
+	axistype <- match.arg(arg=axistype, choices = c("scores","distribution"))
+	
+	if(items[1]=="all"){items<-1:x$nitem}
 	if(missing(xlab)){xlab0<-"Scores"}
 	if(plottype=="expected"){axistype="distribution"}
 	if(plottype=="expectedDIF"){axistype="scores"}
 
 	if(axistype=='distribution'){
 
-		axis<-x$theta
-		quants<-x$quantilestheta
+		axis<-x$evalpoints
+		quants<-x$subjthetasummary
 		if(missing(xlab)){
-			xlab<-paste(simpleCap(x$enumerate[[1]]), paste(unlist(x$enumerate[-1]),collapse=" "), "Quantiles",sep=" ")
+			xlab<-paste(simpleCap(x$thetadist[[1]]), paste(unlist(x$thetadist[-1]),collapse=" "), "Quantiles",sep=" ")
 		}
 	}
 	else{
 
 		axis<-x$expectedscores
-		quants<-x$quantiles
+		quants<-x$subjscoresummary
 		if(missing(xlab)){	
 			xlab<-"Expected Score"
 		}
 	}
 
-
-	if(plottype=="density"){densityplot(x,xlim,ylim,xlab,ylab,main,...)}
-	else if(plottype=="ICC"){ICCplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,cex,...)}
-	else if(plottype=="OCC"){OCCplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,...)}
-	else if(plottype=="expected"){expectedplot(x,axis=axis,quants=x$quantilestheta, main, xlim,ylim, xlab, ylab, ...)}
-	else if(plottype=="sd"){sdplot(x,axis=axis,quants=quants,main, xlab, ylab=ylab,...)}
-	else if(plottype=="info"){IICplot(x,items,axis=axis,quants=quants,test=FALSE,noout=FALSE, main, xlab, ylab, ...)}
-	else if(plottype=="testinfo"){IICplot(x,items,axis=axis,quants=quants,test=TRUE,noout=FALSE, main, xlab, ylab, ...)}
-	else if(plottype=="se"){SEplot(x,axis=axis,quants=quants,main, xlab=xlab, ylab=ylab, ...)}
-	else if(plottype=="reliability"){RelPlot(x,axis=axis,quants=quants,main,xlab=xlab,ylab,...)}
-	else if(plottype=="triangle"){Simplexplot(x,items,main, ...)}
-	else if(plottype=="tetrahedron"){Tetplot(x,items,main, ...)}
-	else if(plottype=="credibility"){Credplot(x,axis=axis,quants=quants,xlab=xlab,subjects=subjects,xlim,...)}
-	else if(plottype=="ICCDIF"){ICCDIFplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,cex,...)}
-	else if(plottype=="OCCDIF"){
-	OCCDIFplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,...)
-	}
-	else if(plottype=="PCA"){PCAplot(x, ...)}
-	else if(plottype=="expectedDIF"){expectedDIFplot(x,axis=axis,quants=quants, main, xlim,ylim, xlab, ylab, ...)}
-	else if(plottype=="densityDIF"){densityDIFplot(x,xlim,ylim,xlab=xlab0,ylab,main,...)}
-	else{print("plottype not recognized")}
+	switch(plottype,
+			density = densityplot(x,xlim,ylim,xlab,ylab,main,...),
+			EIS = ICCplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,cex,...),
+			OCC = OCCplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,...),
+			expected = expectedplot(x,axis=axis,quants=x$subjthetasummary, main, xlim,ylim, xlab, ylab, ...),
+			sd = sdplot(x,axis=axis,quants=quants,main, xlab, ylab=ylab,...),
+			triangle = Simplexplot(x,items,main, ...),
+			tetrahedron = Tetplot(x,items,main, ...),
+			RCC = Credplot(x,axis=axis,quants=quants,xlab=xlab,subjects=subjects,xlim,...),
+			EISDIF = ICCDIFplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,cex,...),
+			OCCDIF = OCCDIFplot(x,items,alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,...),
+			PCA = PCAplot(x, ...),
+			expectedDIF = expectedDIFplot(x,axis=axis,quants=quants, main, xlim,ylim, xlab, ylab, ...),
+			densityDIF = densityDIFplot(x,xlim,ylim,xlab=xlab0,ylab,main,...),
+			print("plottype not recognized")
+	)
+	
 	
 }
 

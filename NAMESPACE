@@ -2,7 +2,13 @@
 useDynLib(KernSmoothIRT)
 
 
-export(ksIRT)
+export(ksIRT, itemcor, subjscore, subjthetaML, subjscoreML, subjOCC, print.ksIRT, plot.ksIRT, subjEIS, subjETS, PCA, subjOCCDIF, subjEISDIF, subjETSDIF)
+
 
 S3method(plot, ksIRT)
 S3method(print, ksIRT)
+
+
+
+
+

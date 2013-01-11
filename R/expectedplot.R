@@ -4,7 +4,7 @@ function(OBJ, axis, quants, main, xlim, ylim, xlab, ylab, ...){
 
 		if(missing(main)){main="Expected Total Score\n"}
 		if(missing(ylab)){ylab="Expected Score"}
-		if(missing(ylim)){ylim=c(min(OBJ$scoresbysubject),max(OBJ$scoresbysubject))}
+		if(missing(ylim)){ylim=c(min(OBJ$subjscore),max(OBJ$subjscore))}
 		if(missing(xlim)){xlim=c(min(axis),max(axis))}	
 
 	

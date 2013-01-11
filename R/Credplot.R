@@ -5,7 +5,7 @@ Credplot <-function (OBJ, axis, subjects, quants, main, xlab, ylab, ...)
         ylab = "Relative Credibility"
     }
     if (missing(subjects)) {
-        subjects <- 1:OBJ$nex
+        subjects <- 1:OBJ$nsubj
     }
     if (missing(main)) {
         main = -1
@@ -14,7 +14,7 @@ Credplot <-function (OBJ, axis, subjects, quants, main, xlab, ylab, ...)
     for (i in subjects) {
        
 
-        relcred <- OBJ$subLIK[[i]]
+        relcred <- OBJ$RCC[[i]]
         if (main == -1) {
             main0 <- paste("Subject: ", i, "\n")
         }
@@ -22,11 +22,11 @@ Credplot <-function (OBJ, axis, subjects, quants, main, xlab, ylab, ...)
             xlab = xlab, ...)
         axis(3, at = quants, lab = labels(quants), tck = 0)
         abline(v = quants, col = "blue", lty = 2)
-        if (axis[1] == OBJ$theta[1]) {
-            abline(v = OBJ$probrank[i], col = "red")
+        if (axis[1] == OBJ$evalpoints[1]) {
+            abline(v = OBJ$subjtheta[i], col = "red")
         }
         else {
-            abline(v = OBJ$scoresbysubject[i], col = "red")
+            abline(v = OBJ$subjscore[i], col = "red")
         }
     }
 }

@@ -1,26 +1,27 @@
 ICCplot <-
+ICCplot <-
 function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
-	dbins<-cut(OBJ$probrank,breaks=c(-999,OBJ$theta[-length(OBJ$theta)],999),labels=FALSE)
+	dbins<-cut(OBJ$subjtheta,breaks=c(-999,OBJ$evalpoints[-length(OBJ$evalpoints)],999),labels=FALSE)
 
 
 		if(missing(ylim)){ylim=-1}
 		if(missing(cex)){cex=.4}
-		if(missing(xlim)){xlim=c(min(OBJ$theta),max(OBJ$theta))}
+		if(missing(xlim)){xlim=c(min(OBJ$evalpoints),max(OBJ$evalpoints))}
 		if(missing(ylab)){ylab="Expected Item Score"}
 		if(missing(main)){main=-1}	
 		if(missing(alpha)){alpha<-.05}
 
 
 
-	plotit <- function(x,OBJ,alpha,axis,quants,scores,main, xlab,ylab,xlim,ylim,cex,...){
+	plotit <- function(x,OBJ,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 
-	Estimate0<-OBJ$probs[which(OBJ$probs[,1]==x),]
+	Estimate0<-OBJ$OCC[which(OBJ$OCC[,1]==x),]
 	maxitem<-max(Estimate0[,3])
 	minitem<-min(Estimate0[,3])
-	Stderr0<-OBJ$Stderrs[which(OBJ$probs[,1]==x),]
-	resp0<-OBJ$binres[which(OBJ$binres[,1]==x),]
+	Stderr0<-OBJ$stderrs[which(OBJ$OCC[,1]==x),]
+	resp0<-OBJ$binaryresp[which(OBJ$binaryresp[,1]==x),]
 
 
 #	Estimate<-Estimate0[which(Estimate0[,3]==maxitem),]
@@ -39,12 +40,12 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 	respit<-apply(respit1,2,sum)
 	
 #	respit<-resp0[which(resp0[,3]==maxitem),-c(1:3)]
-	proptheta<-numeric()
+	propevalpoints<-numeric()
 
-	for (i in 1:OBJ$nval){
+	for (i in 1:OBJ$nevalpoints){
 		
-		binresp<-respit[which(dbins==i)]
-		proptheta[i]<-sum(binresp)/length(binresp)
+		binaryrespp<-respit[which(dbins==i)]
+		propevalpoints[i]<-sum(binaryrespp)/length(binaryrespp)
 	}
 
 
@@ -74,7 +75,7 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 		}
 
-		points(axis,proptheta,cex=cex,...)	
+		points(axis,propevalpoints,cex=cex,...)	
 		
 		
 			axis(3,at=quants, lab=labels(quants),tck=0)
@@ -90,7 +91,7 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 	
 	par(ask=TRUE)
 
-	sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants,scores=scores,main,xlab,ylab,xlim,ylim,cex,...)
+	sapply(items,plotit,OBJ=OBJ,alpha=alpha,axis=axis,quants=quants,main,xlab,ylab,xlim,ylim,cex,...)
 	
 
 }

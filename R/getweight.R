@@ -8,6 +8,7 @@ function(item,option,scale=NULL,key=NULL,weights=NULL,NAweight){
 	else if(scale==1 & option==key){return(1)}
 	else if(scale==1 & option!=key){return(0)}
 	else if(scale==0){return(option)}
+	else if(scale==3){return(0)}
 
 }
 

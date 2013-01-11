@@ -1,8 +1,8 @@
 Package: KernSmoothIRT
 Type: Package
-Title: Nonparametric Item Reponse Theory
-Version: 3.0
-Date: 2012-05-03
+Title: Nonparametric Item Response Theory
+Version: 5.0
+Date: 2013-01-11
 Author: Angelo Mazza, Antonio Punzo, Brian McGuire
 Maintainer: Brian McGuire <mcguirebc@gmail.com>
 Description: This package fits nonparametric item and option
@@ -13,6 +13,7 @@ License: GPL-2
 LazyLoad: yes
 Depends: Rcpp, plotrix, rgl
 LinkingTo: Rcpp
-Packaged: 2012-05-03 13:23:38 UTC; brian
+Packaged: 2013-03-06 18:01:39 UTC; brian
+NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2012-05-03 14:42:37
+Date/Publication: 2013-03-06 19:54:07

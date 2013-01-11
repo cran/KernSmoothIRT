@@ -13,7 +13,7 @@ OCCDIFplot <-function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 		plot_colors <- c("blue","red","forestgreen","black","yellow","orange")
 		if(ngrps>6){plot_colors<-c(plot_colors,sample(colors(),ngrps-6))}
 		
-		IRFlines<-OBJ$probs[which(OBJ$probs[,1]==x),]
+		IRFlines<-OBJ$OCC[which(OBJ$OCC[,1]==x),]
 		opts<-unique(IRFlines[,2])
 		nopts<-length(opts)
 
@@ -28,18 +28,18 @@ OCCDIFplot <-function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 			
 			
 			
-			IRFlineBIG<-OBJ$probs[which(OBJ$probs[,1]==x & OBJ$probs[,2]==opts[i]),]
+			IRFlineBIG<-OBJ$OCC[which(OBJ$OCC[,1]==x & OBJ$OCC[,2]==opts[i]),]
 			lines(axis,IRFlineBIG[-c(1:3)],col="black",lwd=1.5,...)
 			
 			for(j in 1:ngrps){
 
-				cgrp<-OBJ$subsets[[j]]
+				cgrp<-OBJ$DIF[[j]]
 
 
-				if(length(which(cgrp$probs[,1]==x & cgrp$probs[,2]==opts[i]))==0){next;}
+				if(length(which(cgrp$OCC[,1]==x & cgrp$OCC[,2]==opts[i]))==0){next;}
 
-				IRFline<-cgrp$probs[which(cgrp$probs[,1]==x & cgrp$probs[,2]==opts[i]),]
-				SE<-cgrp$Stderrs[which(cgrp$probs[,1]==x & cgrp$probs[,2]==opts[i]),]
+				IRFline<-cgrp$OCC[which(cgrp$OCC[,1]==x & cgrp$OCC[,2]==opts[i]),]
+				SE<-cgrp$stderrs[which(cgrp$OCC[,1]==x & cgrp$OCC[,2]==opts[i]),]
 					
 				try(lines(axis,IRFline[-c(1:3)],col=plot_colors[j],...))
 				

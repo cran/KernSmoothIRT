@@ -6,14 +6,14 @@ function(x,xlim,ylim,xlab,ylab,main,...){
 
 		if(missing(main)){main="Observed Score Distribution\n"}
 		
-		if(missing(xlim)){xlim=c(min(x$scoresbysubject),max(x$scoresbysubject))}
+		if(missing(xlim)){xlim=c(min(x$subjscore),max(x$subjscore))}
 		
 		if(missing(ylab)){ylab="Density of Score"}
 		xlab <- "Observed Scores"
 		
 		
 
-		ymax<-max(density(x$scoresbysubject,from=0,to=max(x$scoresbysubject))$y)
+		ymax<-max(density(x$subjscore,from=0,to=max(x$subjscore))$y)
 
 		if(missing(ylim)){ylim=c(0,ymax+.02)}
 
@@ -31,15 +31,15 @@ function(x,xlim,ylim,xlab,ylab,main,...){
 
 		for(i in 1:ngrps){
 
-			cgrp<-x$subsets[[i]]
-			lines(density(cgrp$scoresbysubject,from=0,to=max(cgrp$scoresbysubject)),col=plot_colors[i],lty=line_type[i],...)
+			cgrp<-x$DIF[[i]]
+			lines(density(cgrp$subjscore,from=0,to=max(cgrp$subjscore)),col=plot_colors[i],lty=line_type[i],...)
 		
 		}
 
-		legend(min(x$scoresbysubject), ymax+.02,x$groups, cex=0.8, col=plot_colors[1:ngrps],lty=line_type[1:ngrps], lwd=2, bty="n");
+		legend(min(x$subjscore), ymax+.02,x$groups, cex=0.8, col=plot_colors[1:ngrps],lty=line_type[1:ngrps], lwd=2, bty="n");
 
-		axis(3,at=x$quantiles, labels=labels(x$quantiles),tck=0)
-		abline(v=x$quantiles,col="blue",lty=2)
+		axis(3,at=x$subjscoresummary, labels=labels(x$subjscoresummary),tck=0)
+		abline(v=x$subjscoresummary,col="blue",lty=2)
 		box()
 
 }

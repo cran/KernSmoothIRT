@@ -7,6 +7,7 @@ function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 		if(missing(ylab)){ylab="Probability"}
 		if(missing(main)){main=-1}	
 		if(missing(alpha)){alpha<-FALSE}
+		
 
 	plotit<-function(x,OBJ,alpha,axis,quants,main, xlim,ylim,xlab,ylab,...){
 
@@ -15,8 +16,8 @@ function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 
 		plot(1,ylim=ylim,main=main,xlim=xlim,type="l",ylab=ylab,xlab=xlab,...)
 
-		IRFlines<-OBJ$probs[which(OBJ$probs[,1]==x),]
-		SE<-OBJ$Stderrs[which(OBJ$probs[,1]==x),]
+		IRFlines<-OBJ$OCC[which(OBJ$OCC[,1]==x),]
+		SE<-OBJ$stderrs[which(OBJ$OCC[,1]==x),]
 
 		for(i in 1:nrow(IRFlines)){
 			if(OBJ$scale[x]==1){
@@ -29,7 +30,7 @@ function(OBJ,items,alpha,axis,quants,main,xlab,ylab,xlim,ylim,...){
 			
 			lines(axis,IRFlines[i,-c(1:3)],col=colortouse, lwd=lwidth)
 			word<-ifelse(IRFlines[i,2]==-1,"NA",as.character(IRFlines[i,2]))
-			wordloc<-round(runif(1,min=10,max=OBJ$nval-10))
+			wordloc<-round(runif(1,min=10,max=OBJ$nevalpoints-10))
 			text(axis[wordloc],IRFlines[i,wordloc],word,cex=.7)
 
 			## Cint

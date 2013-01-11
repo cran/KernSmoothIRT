@@ -8,19 +8,19 @@ function(OBJ, axis, quants, main, xlim, ylim, xlab, ylab, ...){
 		grps<-OBJ$groups
 		ngrps<-length(grps)
 
-		if(missing(xlim)){xlim<-c(min(OBJ$scoresbysubject),max(OBJ$scoresbysubject))}
-		if(missing(ylim)){ylim<-c(min(OBJ$scoresbysubject),max(OBJ$scoresbysubject))}
+		if(missing(xlim)){xlim<-c(min(OBJ$subjscore),max(OBJ$subjscore))}
+		if(missing(ylim)){ylim<-c(min(OBJ$subjscore),max(OBJ$subjscore))}
 
 
 		for(i in 1:(ngrps-1)){
 		
 			for(j in (i+1):ngrps){
 
-				grp1<-OBJ$subsets[[i]]
-				grp2<-OBJ$subsets[[j]]				
+				grp1<-OBJ$DIF[[i]]
+				grp2<-OBJ$DIF[[j]]				
 
-				eval1<-apply(grp1$probs[,-c(1:3)],2,function(x)sum(x*grp1$probs[,3]))
-				eval2<-apply(grp2$probs[,-c(1:3)],2,function(x)sum(x*grp2$probs[,3]))
+				eval1<-apply(grp1$OCC[,-c(1:3)],2,function(x)sum(x*grp1$OCC[,3]))
+				eval2<-apply(grp2$OCC[,-c(1:3)],2,function(x)sum(x*grp2$OCC[,3]))
 
 				plot(eval1,eval2,type="l",ylab=OBJ$groups[j], xlab=OBJ$groups[i], xlim=xlim, ylim=ylim, main=main, ...)
 

@@ -16,21 +16,21 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 	plotit <- function(x,OBJ,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 
-		maxitem<-max(OBJ$probs[which(OBJ$probs[,1]==x),3])
-		minitem<-min(OBJ$probs[which(OBJ$probs[,1]==x),3])
+		maxitem<-max(OBJ$OCC[which(OBJ$OCC[,1]==x),3])
+		minitem<-min(OBJ$OCC[which(OBJ$OCC[,1]==x),3])
 
 		if(main==-1){main=paste("Item: ",OBJ$itemlabels[x],"\n")}
 		if(ylim==-1){ylim=c(minitem,maxitem)}
 
 
-			Estimate0<-OBJ$probs[which(OBJ$probs[,1]==x),]
+			Estimate0<-OBJ$OCC[which(OBJ$OCC[,1]==x),]
 			Estimate1<-apply(Estimate0[,-c(1:3)],2,function(yyy)yyy*Estimate0[,3])
 			EstimateFULL<-apply(Estimate1,2,sum)
 
 
 			
 
-		plot(c(min(axis),max(axis)),c(0,max(OBJ$probs[which(OBJ$probs[,1]==x),])),type="n",xlim=xlim, ylim=ylim ,xlab=xlab,ylab=ylab,main = main,...)
+		plot(c(min(axis),max(axis)),c(0,max(OBJ$OCC[which(OBJ$OCC[,1]==x),])),type="n",xlim=xlim, ylim=ylim ,xlab=xlab,ylab=ylab,main = main,...)
 		
 	
 
@@ -46,25 +46,25 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 		for(i in 1:ngrps){
 
-			cgrp<-OBJ$subsets[[i]]
+			cgrp<-OBJ$DIF[[i]]
 
 
 
-			dbins<-cut(cgrp$probrank,breaks=c(-999,cgrp$theta[-length(cgrp$theta)],999),labels=FALSE)
+			dbins<-cut(cgrp$subjtheta,breaks=c(-999,cgrp$evalpoints[-length(cgrp$evalpoints)],999),labels=FALSE)
 
-			resp0<-cgrp$binres[which(cgrp$binres[,1]==x),]
+			resp0<-cgrp$binaryresp[which(cgrp$binaryresp[,1]==x),]
 			respit1<-apply(resp0[,-c(1:3)],2,function(x)x*resp0[,3])
 			respit<-apply(respit1,2,sum)
 			#respit<-resp0[which(resp0[,3]==maxitem),-c(1:3)]
-			proptheta<-numeric()
+			propevalpoints<-numeric()
 
-			for (jjj in 1:cgrp$nval){
+			for (jjj in 1:cgrp$nevalpoints){
 		
-				binresp<-respit[which(dbins==jjj)]
-				proptheta[jjj]<-sum(binresp)/length(binresp)
+				binaryrespp<-respit[which(dbins==jjj)]
+				propevalpoints[jjj]<-sum(binaryrespp)/length(binaryrespp)
 			}
 
-			Estimate0<-cgrp$probs[which(cgrp$probs[,1]==x),]
+			Estimate0<-cgrp$OCC[which(cgrp$OCC[,1]==x),]
 			Estimate1<-apply(Estimate0[,-c(1:3)],2,function(yyy)yyy*Estimate0[,3])
 			Estimate<-apply(Estimate1,2,sum)
 
@@ -72,13 +72,13 @@ function(OBJ,items,alpha,axis,quants,main, xlab,ylab,xlim,ylim,cex,...){
 
 
 
-			Stderr0<-cgrp$Stderrs[which(cgrp$probs[,1]==x),]
+			Stderr0<-cgrp$stderrs[which(cgrp$OCC[,1]==x),]
 			Stderr1<-apply(Stderr0[,-c(1:3)],2,function(zzz)zzz*Stderr0[,3])
 			Stderr<-apply(Stderr1,2,sum)
 			
 		
 			lines(axis,Estimate,col=plot_colors[i], ...)
-			points(axis,proptheta,cex=cex,col=plot_colors[i], ...)
+			points(axis,propevalpoints,cex=cex,col=plot_colors[i], ...)
 
 
 

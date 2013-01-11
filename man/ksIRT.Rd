@@ -1,196 +1,129 @@
 \name{ksIRT}
 \alias{ksIRT}
-\alias{plot.ksIRT}
 \alias{print.ksIRT}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ksIRT - kernel smoothing in Item Response Theory
 }
 \description{
-This function fits nonparametric item and options characteristic curves using kernel smoothing techniques. It allows for a variety of exploratory plotting tools.
+This function fits nonparametric item and options characteristic curves using kernel smoothing techniques.
+Within the \pkg{KernSmoothIRT} package, it provides the relevant data for the graphical analysis of multiple choice test and questionnaire data. 
 }
 \usage{
-ksIRT(responses, key = NULL, scale = NULL, kernel="gaussian", labs = NULL, weights = NULL, miss = "category", NAweight=0, theta = NULL, nval=51, bandwidth = "default", enumerate=list("norm",0,1), groups=FALSE)
-\method{plot}{ksIRT}(x, plottype = "OCC", items="all", subjects, axistype = "scores", alpha, main, xlab, ylab, xlim, ylim, cex, ...)
+ksIRT(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels, weights, miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, evalpoints, nevalpoints, bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("norm",0,1), groups = FALSE)
+
 \method{print}{ksIRT}(x,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{responses}{
-Input data matrix with options selected from each individual for each item. Rows represent individuals, columns represent items. Missing values are inserted as \code{NA}.
+\item{responses}{
+input data matrix with options selected from each individual for each item. Rows represent individuals, columns represent items. Alternatively, a data.frame or list can be specified. Missing values are inserted as \code{NA}.
 }
-  \item{key}{
+\item{key}{
 %%     ~~Describe \code{key} here~~
-An optional numeric vector. If provided it must be a numeric vector with the number of entries equal to the number of items. If the items are nominal (multiple choice), it should contain option for the correct response.
+an optional numeric vector. 
+If provided \code{key} must be a numeric vector with the number of entries equal to the number of items. 
+If the items are multiple choice, \code{key} should contain the option that corresponds to the correct response.
 
-If the data are ordinal, key should contain the largest option value for each item. In this case, the weight assigned to each option is equal to its option number.
+If the data are rating-scale, \code{key} should contain the largest option value for each item. 
+In this case, the weight assigned to each option is equal to its option number.
 
-More complicated weighting schemes such as partial credit can be specified in the \code{weights} option. If \code{weights} is specified, \code{key} must be left blank. 
+More complicated weighting schemes, such as partial credit, can be specified in the \code{weights} argument. 
+If \code{weights} is specified, \code{key} must be left blank. 
 
 }
-  \item{scale}{
-Either a character string or a numeric vector specifying the type of items. If all of the items are nominal then \code{scale="nominal"}. If all the items are ordinal, \code{scale="ordinal"}. If the test has a mixture of nominal and ordinal items, then scale should be a vector with length equal to the number of items with entries of 1 for each nominal item and 0 for each ordinal item.
+\item{format}{
+a numeric scalar or vector specifying the type of items. 
+If all of the items are multiple choice, then \code{format = 1}. 
+If all of the items are rating-scale or partial credit, then \code{format = 2}. 
+If all of the items are nominal items, then \code{format = 3}. 
+If the test has a mixture of items of different formats, then format is a vector with length equal to the number of items with entries of 1 for each multiple choice item and 2 for each rating-scale item. For more complicated weighting schemes use the \code{weights} argument.
 
-
 }
-  \item{kernel}{
-A character string specifying the smoothing kernel. Must be either \code{"gaussian"}, \code{"quadratic"} or \code{"uniform"}. The default is \code{"gaussian"}.
+\item{kernel}{
+a character string specifying the kernel function. \code{kernel} must be either \code{"gaussian"}, \code{"quadratic"} or \code{"uniform"}. The default is \code{"gaussian"}.
 }
-  \item{labs}{
-Optional list of labels for each item. If omitted, each item will be labelled according to its numerical order. These labels will be used in plotting.
+\item{itemlabels}{
+optional list of labels for each item. 
+If omitted, each item will be labelled according to its numerical order. 
+These labels will be used in plotting.
 }
-  \item{weights}{
+\item{weights}{
 %%     ~~Describe \code{weights} here~~
-Optional list argument that may be used in lieu of including a key. Specifying weights allows for more complicated weighting schemes than all or nothing on nominal items, and weight equal to option value for ordinal items. Weight must be a list of length equal to the number of items. Each entry in the list must be a matrix with two rows. The first row should contain each option, and the second row should contain the weight given to each of the options in row 1.
-
-If weights is omitted and the data are nominal, then a weight of 1 is given to the correct response from key.
-If weights is omitted and the data are ordinal, then a weight equal to the option number is given to each response.
+optional list that may be used in lieu of including \code{key}. Specifying \code{weights} allows for more complicated weighting schemes than the default. Its length must be equal to the number of items and each entry must be a matrix with option numbers in the first row and option weights in the second row. If weights is omitted and \code{format=1}, then weights are given according to \code{key}. If \code{weights} is omitted and \code{format=2}, then an option weight equals  the option number is given to each response. If \code{weights} is omitted and and \code{format=3}, then weights are set to zero.
 }
-  \item{miss}{
+
+\item{miss}{
 %%     ~~Describe \code{miss} here~~
-A character string specifying the method used to manage missing responses.
+a character string specifying the method used to manage missing responses.
 
-The default value, \code{miss="category"}, treats missing responses as an option value with zero weight. In this case, the missing values will be plotted as an additional option on the Option Characteristic Curves. You can provide an argument to \code{NAweight} if you would like missing observations to have non-zero weight.
+The default value, \code{miss="option"}, considers the missing responses as a further option, labeled as \code{NA}, with zero weight. 
+Such \code{NA} option will be added to the plot of the Option Characteristic Curves. 
+Alternatively, a different weight for the \code{NA} option may be specified through the \code{NAweight} argument.
 
-\code{miss="random.unif"} substitutes another option value by sampling from the non-missing responses to the same item with each option equally probable of selection.
+\code{miss="random.unif"} substitutes \code{NA}s with options randomly chosen from the possible ones for the corresponding  item.
 
-\code{miss="random.multinom"} substitutes another option value by sampling from the non-missing responses to the same item with each option's probability of selection equal to that option's relative frequency amongst the other responses.
+\code{miss="random.multinom"} does the same substitution as \code{miss="random.unif"} but each option has a probability of being selected proportional to its relative frequency.
 
 \code{miss="omit"}  excludes from the analysis all the subjects with at least one omitted response.
 }
+
 \item{NAweight}{
-A scalar numeric weight given to missing responses when \code{miss=category}. The default is zero.
+a scalar value that specifies the weight given to missing responses when \code{miss="option"}. 
+The default is zero.
 }
-  \item{theta}{
-%%     ~~Describe \code{theta} here~~
-An optional numeric vector of quantiles at which to estimate curves. The default is 51 evenly spaced points with end points determined by the number of subjects and the type of \code{enumerate} used.
+
+\item{evalpoints}{
+%%     ~~Describe \code{evalpoints} here~~
+an optional numeric vector that specifies the quantiles at which to estimate the Option Characteristic Curves. 
+If unspecified, the default is \code{nevalpoints} evenly spaced values with end points determined according to the number of subjects and the distribution specified with the \code{thetadist} argument.
 
 }
-  \item{nval}{
-An optional scalar value that specifies the number of evenly spaced points at which curves are estimated. The end points are determined by the number of subjects and the type of \code{enumerate} used. This argument is an alternative to completely specifying the points at which to estimate curves with \code{theta}. If both \code{nval} and \code{theta} are specified, then \code{theta} will be used.
+	\item{nevalpoints}{
+an optional scalar value that specifies the number of evenly spaced points at which curves are estimated. This value is used as an alternative to a user defined vector in the \code{evalpoints} argument. The default value is 51.
+The end points are determined according to the number of subjects and to the distribution specified for the \code{thetadist} argument. 
+If both \code{nevalpoints} and \code{evalpoints} are specified, then \code{evalpoints} takes precedence.
  
 }
-  \item{bandwidth}{
+\item{bandwidth}{
 %%     ~~Describe \code{bandwidth} here~~
-Either a character string or a numeric vector specifying the smoothing bandwidth to use for kernel smoothing. The default is: \code{1.06*sigma.hat*(nex)^(-.2)} for each item where \code{nex} is the number of subjects. \code{sigma.hat} is the standard deviation of the distribution specified with \code{enumerate} if a normal distribution is used. If the distribution used to enumerate the subjects is not normal, then \code{sigma.hat} is the standard deviation of the relative ranks on the quantile scale of the distribution that is specified. Alternatively, you may specify a numeric vector that contains a smoothing bandwidth for each item. 
+either \code{"Silverman"}, \code{"CV"} or a numeric vector specifying, for each item, the bandwidth to use for kernel smoothing. The default value, \code{bandwidth="Silverman"}, is a numeric vector computed following the well-known Silverman's rule of thumb. If \code{bandwidth="CV"}, then the bandwidth is chosen for each item through cross-validation.
 
-If \code{bandwidth="CV"}, then the bandwidth is chosen for each item through cross-validation.
  }
-\item{enumerate}{
-A list specifying the distribution to be used to enumerate (in acceptation of Ramsay, 1991) the subjects. By default a standard normal distribution is used. You can adopt another distribution by specifying the first element of the list as \code{"norm"}, \code{"beta"}, \code{"unif"}, \code{"gamma"}, etc. where the character string is the same as used in the quantiles function \code{qnorm()}, \code{qbeta()}, \code{qunif()}, \code{qgamma()}. The other elements of the list should be the distribution parameters as required by the quantiles functions.
+ 
+\item{RankFun}{
+a function that is used to rank subjects. The default value is \code{"sum"}. Another common choice is \code{"mean"}.
+}
+
+\item{SubRank}{
+an optional numeric vector specifying the rank of each of the subjects. If unspecified, subjects will be ranked according to the function passed through the argument \code{RankFun}.
+}
+ 
+\item{thetadist}{
+a list specifying the distribution to be used to thetadist (see Ramsay, 1991, p. 615) the subjects. 
+By default a standard normal distribution is used. 
+A different distribution can be adopted by specifying the first element of the list as \code{"norm"}, \code{"beta"}, \code{"unif"}, \code{"gamma"}, etc. where the character string is the same as used in the subjscoresummary function  \code{qnorm()},\code{qbeta()}, \code{qunif()}, \code{qgamma()}. 
+The other elements of the list should be the distribution parameters as required by the subjscoresummary function chosen.
 }
 
 \item{groups}{
-An optional vector of length equal to the number of subjects containing the group designation for each subject. Adding this option allows for comparisons within groups using the Differential Item Functioning tools (see details section).
+an optional vector of length equal to the number of subjects containing the group designation of each subject. Adding this option allows for comparisons between groups using the Differential Item Functioning tools (see details section).
 
 }
-\item{x}{A ksIRT created with ksIRT()}
 
-\item{plottype}{the type of plot to be used (see details below). If no \code{plottype} is specified then 
-option characteristic curves are plotted. See details section below for the types of plots that can be created.}
+\item{x}{
+a \code{ksIRT} object to be printed.
+}
 
-\item{items}{a vector containing the items to be plotted. If \code{items='all'}, all items are plotted.}
-
-\item{alpha}{A numeric scalar indicating the confidence level to use in creating confidence intervals in the option and item characteristic curve plots. By default, the item characteristic plot uses \code{alpha=.05} and the option characteristic plot does not plot confidence intervals, but either can be changed by specifying an alpha level or confidence intervals may be omitted entirely with \code{alpha=FALSE}.}
-
-\item{subjects}{A vector specifying the subjects to plot. This option is only used for credibility plots \code{plottype="credibility"}.}
-
-\item{axistype}{A character string specifying the display variable to be used on the x-axis. The default is \code{axistype="distribution"}, which uses the quantiles of the distribution specified in \code{enumerate}. The alternative is \code{axistype="scores"} which displays the expected score.}
-
-\item{main}{Optional character string title. See plot().}
-
-\item{xlab}{Optional character string x-axis label. See plot().}
-
-\item{ylab}{Optional character string y-axis label. See plot().}
-
-\item{xlim}{Optional numeric vector of x-axis limits. See plot().}
-
-\item{ylim}{Optional numeric vector of y-axis limits. See plot().}
-
-\item{cex}{Optional scalar used for point magnification. See par().}
-
-\item{...}{other parameters passed to the plot function}
+\item{...}{further parameters}
 }
 
 \details{
 %%  ~~ If necessary, more details than the description above ~~
-Plotting the ksIRT object (\code{plot(ksIRT,...)}) produces a few different plots that are of interest. The different plots created from various \code{plottype} options are described below:
-\describe{
+When \code{bandwidth="Silverman"}, the rule of thumb of Silverman (1986, p. 45) is implemented with the formula: \code{1.06*sigma.hat*nsubj^(-.2)}, where \code{nsubj} is the number of subjects and \code{sigma.hat} is the standard deviation of the subjscoresummary associated to the subjects according to the distribution specified with \code{thetadist}. 
+Note that when \code{thetadist=list("norm",mean,sd)}, \code{sigma.hat} is the value specified for \code{sd}.
 
-\item{\code{plottype="density"}}{
-Produces a simple kernel density plot of the observed scores
-}
-
-\item{\code{plottype="ICC"}}{
-Plot of the item characteristic curves for each of the item numbers in the \code{items} option. By default, plots for every item.
-}
-
-\item{\code{plottype="OCC"}}{
-Plot of the option characteristic curves for each of the item numbers in the \code{items} option. By default, plots for every item.
-}
-
-\item{\code{plottype="expected"}}{
-Plot of the observed vs. expected scores.
-}
-
-\item{\code{plottype="sd"}}{
-Plot of the standard deviation of observed scores.
-}
-
-\item{\code{plottype="info"}}{
-Plots item information function for each of the item numbers in the vector items. 
-}
-
-\item{\code{plottype="testinfo"}}{
-Plots item information function for the entire test. 
-}
-
-\item{\code{plottype="se"}}{
-Plots the standard error of estimated scores.
-}
-
-\item{\code{plottype="reliability"}}{
-Plots the reliability of the test at different trait levels.
-}
-
-\item{\code{plottype="credibility"}}{
-Plots the credibility and actual score for each subject specified by the \code{subjects} option. By default, plots for each subject.
-}
-
-\item{\code{plottype="triangle"}}{
-Produces a triangle simplex plot with the highest 3 probability options for each item specified by the \code{items} option. By default, plots for all items.
-}
-
-\item{\code{plottype="tetrahedron"}}{
-Produces a tetrahedron simplex plot with the highest 4 probability options for each item specified by the \code{items} option. The tetrahedron plot can be rotated by using the mouse. By default, plots for all items.
-}
-
-\item{\code{plottype="PCA"}}{
-Produces Principle Component Analysis plot of the test. One component represents difficulty while the other represents discrimination.
-}
-
-## Below are Differential Item Functioning (DIF) plots
-## They are available only when the groups option is specified when creating the ksIRT object
-
-\item{\code{plottype="densityDIF"}}{
-Plots density of observed scores for each of the different groups specified with the \code{groups} used in creating the ksIRT object.
-}
-
-\item{\code{plottype="expectedDIF"}}{
-Plots pairwise expected value comparison plots for each of the different groups specified with the \code{groups} used in creating the ksIRT object.
-}
-
-\item{\code{plottype="ICCDIF"}}{
-Plots item characteristic curves for each of the different groups. Accepts the same arguments as \code{plottype="ICC"}, but by default does not show confidence intervals. This can be changed with the \code{alpha} option.
-}
-
-\item{\code{plottype="OCCDIF"}}{
-Plots option characteristic curves for each of the different groups. Accepts the same arguments as \code{plottype="OCC"}
-}
-
-}
-Printing the ksIRT object shows the point polyserial correlation correlation between each item and the overall test score.
-
-
+Printing the \code{ksIRT} object shows the point polyserial correlation correlation between each item and the overall test score.
 }
 \value{
 %%  ~Describe the value returned
@@ -199,163 +132,145 @@ Printing the ksIRT object shows the point polyserial correlation correlation bet
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 
-Returned from this function is a ksIRT object which is a list with the following components:
+Returned from this function is a \code{ksIRT} object which is a list with the following components:
 
-\item{binres}{
-A matrix of binary responses. Each row corresponds to a single option. The first column specifies the item. The second specifies the option. The third is the weight. Each additional column is a binary indication of whether a subject selected that option.
-}
-\item{probs}{
-A matrix with the first 3 columns the same as \code{binres}. There are \code{nval} additional columns with the smoothed probability of selecting each option.
-}
-\item{Stderrs}{
-A matrix with the first 3 columns the same as \code{binres}. There are \code{nval} additional columns with the standard errors of selecting each option.
+\item{nitem}{
+an integer indicating the number of items.
 }
 
-\item{scoresbysubject}{
-A vector containing the observed score of each subject.
+\item{nsubj}{
+an integer indicating the number of subjects.
+}
+
+\item{nevalpoints}{
+an integer indicating the number of points for curve estimation.
+}
+
+\item{binaryresp}{
+a matrix of binary responses. Each row corresponds to a single option. The first three columns
+specify the item, the option, and the corresponding weight. Each additional column is a binary indicator of whether a subject selected that option.
+}
+\item{OCC}{
+a matrix with the first 3 columns the same as \code{binaryresp} and an additional column for each quantile at which the option characteristic curves have been estimated. 
+The additional columns contain the kernel smoothed probabilities of selecting each option.
+}
+\item{stderrs}{
+a matrix as \code{OCC} containing the standard errors of \code{OCC}. 
+}
+
+\item{subjscore}{
+a vector containing the observed score of each subject.
 }
 
 \item{itemlabels}{
-A list containing the label for each item.
+a list containing the label for each item.
 }
 
-\item{theta}{
-A vector of quantiles to use for curve estimation.
+\item{thetadist}{
+a list indicating the distribution used to rank subjects (see \code{thetadist} in Arguments).
 }
 
-\item{quantiles}{
-A vector score quantiles for plotting.
+\item{subjtheta}{
+a vector of quantile ranks for each subject on the distribution specified in \code{thetadist}.
 }
 
-\item{quantilestheta}{
-A vector of distribution quantiles for plotting.
+\item{evalpoints}{
+a vector with the subjscoresummary used in curve estimation.
 }
 
-\item{scoresattheta}{
-A vector of scores used for plotting at each \code{theta} point.
+\item{subjscoresummary}{
+a vector of subjscoresummary, of probabilities \code{.05}, \code{.25}, \code{.50}, \code{.75}, \code{.95}, for the observed overall scores. 
+}
+
+\item{subjscoresummaryevalpoints}{
+a vector as \code{subjscoresummary} but computed on \code{subjtheta}.
 }
 
 \item{SmthWgts}{
-A matrix of weights use in kernel smoothing.
+a matrix containing the kernel weights.
 }
 
 \item{scale}{
-A vector indicating whether each item is ordinal or nominal; 1 indicates nominal, 0 indicates ordinal.
+a vector indicating whether each item is multiple-choice, rating-scale or nominal; \code{1} indicates multiple-choice, \code{0} indicates rating-scale, \code{3} indicates nominal.
+}
+\item{format}{
+returns the \code{format} argument passed at function call.
 }
 
-\item{enumerate}{
-A list indicating the distribution to rank subjects (see \code{enumerate} in Arguments).
+\item{bandwidth}{
+a vector containing the bandwidths for each item.
 }
 
-\item{probrank}{
-A vector of quantile ranks for each subject.
-}
-
-\item{band}{
-A vector of bandwidths used for kernel smoothing each item.
-}
-
-\item{nitems}{
-A scalar indicating the number of items.
-}
-
-\item{nex}{
-A scalar indicating the number of subjects.
-}
-
-\item{nval}{
-A scalar indicating the number of points for curve estimation.
-}
-
-\item{subsets}{
-A list of ksIRT objects created for each of the subgroups specified by \code{groups}.
+\item{DIF}{
+a list of \code{ksIRT} objects created for each of the subgroups specified by \code{groups}.
 }
 
 \item{groups}{
-A vector indicating the different groups specified by \code{groups}.
+returns the \code{groups} argument passed at function call.
 }
-\item{pserial}{
-The point polyserial correlation for each item.
+\item{itemcor}{
+a vector containing the point polyserial correlation for each item.
 }
-\item{subLIK}{
-The normalized likelihood for each subject evaluated at \code{theta}.
+\item{RCC}{
+a list of \code{nsubj} vectors containing the normalized likelihood for each value in \code{evalpoints}. 
 }
-\item{subLIK}{
-The maximum likelihood estimate for the expected total score of each subject.
+\item{subjthetaML}{
+the maximum likelihood estimate for the expected total score of each subject.
 }
 }
-
-
 
 \examples{
-
-### Nominal Multiple Choice Data
+ ## Psych101 data
 data(Psych101)
-
-Psych1 <- ksIRT(responses=Psychresponses, key=Psychkey, scale="nominal")
-
-plot(Psych1, plottype="ICC",items=1:5)
-plot(Psych1, plottype="OCC",items=1:5)
-plot(Psych1, plottype="credibility",subjects=1:5)
-plot(Psych1, plottype="testinfo")
+Psych1 <- ksIRT(responses = Psychresponses[1:100,], key = Psychkey, format = 1)
+Psych1
+    
+plot(Psych1,plottype="OCC", item=c(24,25,92,96))
+plot(Psych1,plottype="EIS", item=c(24,25,92,96))
+plot(Psych1, plottype="tetrahedron", items=c(24,92))
+plot(Psych1, plottype="triangle", items=c(24,92))
 plot(Psych1, plottype="PCA")
-plot(Psych1, plottype="triangle", items=1:5)
-plot(Psych1, plottype="tetrahedron", items=6:10)
+plot(Psych1,plottype="RCC", subjects=c(33,92))
+ 
+PCA(Psych1)
+subjEIS(Psych1)
+subjETS(Psych1)
+subjOCC(Psych1, stype="ObsScore")
+subjscore(Psych1)
+subjthetaML(Psych1)
+subjscoreML(Psych1)
+ 
+plot(Psych1, plottype="expected")
+plot(Psych1, plottype="sd")
 plot(Psych1, plottype="density")
-plot(Psych1, plottype="reliability")
-plot(Psych1, plottype="se")
 
+## HIV data
+data(HIV)
+HIVsubset <- HIV[c(c(1:50),c(1508:1558),c(2934:2984)),]
+gr2 <- as.character(HIVsubset$SITE)
+DIF2 <- ksIRT(res=HIVsubset[,-(1:3)], key=HIVkey, format = 2, groups=gr2, miss="omit")
+
+plot(DIF2, plottype="expectedDIF", lwd=2)
+plot(DIF2, plottype="densityDIF", lwd=2)
+plot(DIF2, plottype="EISDIF",  item=c(6,11))
 
 ### Ordinal Survey Data
 data(BDI)
-BDI1 <- ksIRT(responses=BDIresponses, key=BDIkey, scale="ordinal", bandwidth="CV", miss="omit")
+BDI1 <- ksIRT(responses=BDIresponses, key=BDIkey, format = 2, miss="omit")
 
-
-plot(BDI1, plottype="expected")
+plot(BDI1, plottype="OCC", items=1:4)
 plot(BDI1, plottype="sd")
-plot(BDI1, plottype="info",items=1:5)
 plot(BDI1, plottype="density", ylim=c(0,0.1))
-
-
-### Ordinal Survey Data Comparison by Gender
-data(HIV)
-HIVres <- ksIRT(HIV[,-(1:3)], key=HIVkey, scale="ordinal", miss="omit")
-HIVres
-
-plot(HIVres, plottype="OCC", item=9)
-plot(HIVres, plottype="ICC", item=9)
-plot(HIVres, plottype="tetrahedron", item=9)
-
-DIF1 <- ksIRT(res=HIV[,-(1:3)], key=HIVkey, scale="ordinal", groups=as.character(HIV$GENDER), miss="omit")
-
-plot(DIF1, plottype="expectedDIF", lwd=2)
-plot(DIF1, plottype="densityDIF", lwd=2)
-
-plot(DIF1, plottype="OCCDIF", item=3)
-plot(DIF1, plottype="ICCDIF", cex=0.5, item=3)
-
-DIF2 <- ksIRT(res=HIV[,-(1:3)], key=HIVkey, scale="ordinal", groups=as.character(HIV$SITE), miss="omit")
-plot(DIF2, plottype="expectedDIF", lwd=2)
-plot(DIF2, plottype="densityDIF", lwd=2)
-
-plot(DIF2, plottype="ICCDIF", item=c(6,11))
-
-
-################### Aditional Examples ###############################
-
-## Alternative kernels
-Psych2 <- ksIRT(Psychresponses, key=Psychkey, kernel="quadratic", scale="nominal", nval=100)
-Psych3 <- ksIRT(Psychresponses, key=Psychkey, kernel="uniform", scale="nominal")
-
-## Alternative enumeration
-Psych4 <- ksIRT(Psychresponses, key=Psychkey, scale="nominal", enumerate=list("beta",2.5,2.5))
-
 
 }
 
 \references{
-Ramsay JO (1991). Kernel Smoothing Approaches to Nonparametric Item Characteristic
-   Curve Estimation. Psychometrika, 56(4), 611 to 630.
+Ramsay, J.O. (2000). 
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+   
+ Silverman, B.W. (1986). 
+ \emph{Density Estimation for Statistics and Data Analysis}. 
+ Chapman & Hall, London.
 }
 
 
