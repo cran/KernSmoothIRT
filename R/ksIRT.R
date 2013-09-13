@@ -9,6 +9,8 @@ function(responses, key, format, kernel = c("gaussian","quadratic","uniform"), i
 	if(missing(nevalpoints)) nevalpoints <- NULL
 	if(missing(format)) format <- NULL
 	
+
+	
 	if(is.null(evalpoints) & is.null(nevalpoints)){nevalpoints <- 51}
 	else if(is.null(nevalpoints)){nevalpoints <- length(evalpoints)}
 	
@@ -29,10 +31,12 @@ function(responses, key, format, kernel = c("gaussian","quadratic","uniform"), i
 
 	nsubj <- nrow(responses);
 	nitem<-ncol(responses);
+	
+	if(length(key) == 1){key <- rep(key, nitem)}
 
 	Check<-Inputcheck(responses,key,format,itemlabels,weights,miss,evalpoints,bandwidth,nitem,nsubj,kernel,NAweight,nevalpoints,thetadist,groups,SubRank)
 	## Make sure input variables are specified correctly or return a message
-	if(Check==0){return(Check)}
+	if(Check!="NoErr"){stop(Check)}
 
 
 	## Determine type of response for each item.

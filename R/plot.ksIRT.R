@@ -1,6 +1,10 @@
 plot.ksIRT <-
 function(x, plottype = c("OCC","EIS","density","expected","sd","triangle","tetrahedron","RCC","EISDIF","OCCDIF","PCA","expectedDIF","densityDIF"), items= "all", subjects, axistype = c("scores","distribution"), alpha, main, xlab, ylab, xlim, ylim, cex,...){
 
+	oldops <- options()
+	oldpar <- par(no.readonly = TRUE)
+	
+
 	plottype <- match.arg(arg = plottype, choices = c("OCC","EIS","density","expected","sd","triangle","tetrahedron","RCC","EISDIF","OCCDIF","PCA","expectedDIF","densityDIF"))
 	axistype <- match.arg(arg=axistype, choices = c("scores","distribution"))
 	
@@ -42,6 +46,9 @@ function(x, plottype = c("OCC","EIS","density","expected","sd","triangle","tetra
 			densityDIF = densityDIFplot(x,xlim,ylim,xlab=xlab0,ylab,main,...),
 			print("plottype not recognized")
 	)
+	
+	options(oldops)
+	par(oldpar)
 	
 	
 }

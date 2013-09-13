@@ -10,7 +10,10 @@ This function fits nonparametric item and options characteristic curves using ke
 Within the \pkg{KernSmoothIRT} package, it provides the relevant data for the graphical analysis of multiple choice test and questionnaire data. 
 }
 \usage{
-ksIRT(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels, weights, miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, evalpoints, nevalpoints, bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("norm",0,1), groups = FALSE)
+ksIRT(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels, 
+weights, miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, 
+evalpoints, nevalpoints, bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, 
+thetadist = list("norm",0,1), groups = FALSE)
 
 \method{print}{ksIRT}(x,...)
 }
@@ -21,15 +24,13 @@ input data matrix with options selected from each individual for each item. Rows
 }
 \item{key}{
 %%     ~~Describe \code{key} here~~
-an optional numeric vector. 
-If provided \code{key} must be a numeric vector with the number of entries equal to the number of items. 
-If the items are multiple choice, \code{key} should contain the option that corresponds to the correct response.
+a numeric vector or  a scalar. If \code{key} is a vector, its length must match the number of items; if it is a scalar, its value is used for all items. 
 
-If the data are rating-scale, \code{key} should contain the largest option value for each item. 
-In this case, the weight assigned to each option is equal to its option number.
+If the items are multiple choice, \code{key} should contain the option that corresponds to the correct response. 
 
-More complicated weighting schemes, such as partial credit, can be specified in the \code{weights} argument. 
-If \code{weights} is specified, \code{key} must be left blank. 
+If the data are rating-scale, \code{key} should contain the largest option value for each item. In this case, the weight assigned to each option is equal to its option number. 
+
+More complicated weighting schemes, such as partial credit, can be specified in the \code{weights} argument. If \code{weights} is specified, \code{key} must be left blank. 
 
 }
 \item{format}{
@@ -96,7 +97,7 @@ a function that is used to rank subjects. The default value is \code{"sum"}. Ano
 }
 
 \item{SubRank}{
-an optional numeric vector specifying the rank of each of the subjects. If unspecified, subjects will be ranked according to the function passed through the argument \code{RankFun}.
+a numeric vector specifying the rank of each of the subjects. If unspecified and \code{format=1} or \code{format= 2}, subjects will be ranked according to the function passed through the argument \code{RankFun}. When \code{format=3} this argument must be provided.
 }
  
 \item{thetadist}{

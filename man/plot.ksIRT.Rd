@@ -9,7 +9,10 @@
 The plot method for \code{ksIRT} objects includes a variety of exploratory plotting tools.
 }
 \usage{
-\method{plot}{ksIRT}(x, plottype = c("OCC", "EIS", "density", "expected", "sd", "triangle", "tetrahedron", "RCC", "EISDIF", "OCCDIF", "PCA", "expectedDIF", "densityDIF"), items = "all", subjects, axistype = c("scores", "distribution"), alpha, main, xlab, ylab, xlim, ylim, cex, ...)
+\method{plot}{ksIRT}(x, plottype = c("OCC", "EIS", "density", "expected", "sd", 
+"triangle", "tetrahedron", "RCC", "EISDIF", "OCCDIF", "PCA", "expectedDIF", 
+"densityDIF"), items = "all", subjects, axistype = c("scores", "distribution"),
+alpha, main, xlab, ylab, xlim, ylim, cex, ...)
 
 }
 %- maybe also 'usage' for other objects documented here.
