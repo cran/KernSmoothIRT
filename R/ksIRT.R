@@ -1,5 +1,7 @@
 ksIRT <-
-function(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels, weights, miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, evalpoints, nevalpoints, bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("norm",0,1), groups = FALSE){
+function(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels, weights, 
+miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, evalpoints, nevalpoints, 
+bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("norm",0,1), groups = FALSE){
 
 	if(missing(key)) key <- NULL
 	if(missing(itemlabels)) itemlabels <- NULL

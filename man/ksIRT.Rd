@@ -10,8 +10,8 @@ This function fits nonparametric item and options characteristic curves using ke
 Within the \pkg{KernSmoothIRT} package, it provides the relevant data for the graphical analysis of multiple choice test and questionnaire data. 
 }
 \usage{
-ksIRT(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels, 
-weights, miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, 
+ksIRT(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels,
+weights,miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, 
 evalpoints, nevalpoints, bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, 
 thetadist = list("norm",0,1), groups = FALSE)
 
@@ -266,12 +266,18 @@ plot(BDI1, plottype="density", ylim=c(0,0.1))
 }
 
 \references{
+ Mazza A, Punzo A, McGuire B. (2014). 
+\pkg{KernSmoothIRT}: An {R} Package for Kernel Smoothing in Item Response Theory.
+\emph{Journal of Statistical Software}, 58 6, 1-34. URL: \url{http://www.jstatsoft.org/v58/i06/}.
+
 Ramsay, J.O. (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
+\url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
    
  Silverman, B.W. (1986). 
  \emph{Density Estimation for Statistics and Data Analysis}. 
  Chapman & Hall, London.
+
 }
 
 

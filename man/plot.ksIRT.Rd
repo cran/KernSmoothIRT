@@ -11,7 +11,7 @@ The plot method for \code{ksIRT} objects includes a variety of exploratory plott
 \usage{
 \method{plot}{ksIRT}(x, plottype = c("OCC", "EIS", "density", "expected", "sd", 
 "triangle", "tetrahedron", "RCC", "EISDIF", "OCCDIF", "PCA", "expectedDIF", 
-"densityDIF"), items = "all", subjects, axistype = c("scores", "distribution"),
+"densityDIF"), items = "all", subjects, axistype = c("scores", "distribution"), 
 alpha, main, xlab, ylab, xlim, ylim, cex, ...)
 
 }
@@ -126,6 +126,10 @@ No values are returned from the plot function.
 
 
 \references{
+ Mazza A, Punzo A, McGuire B. (2014). 
+\pkg{KernSmoothIRT}: An {R} Package for Kernel Smoothing in Item Response Theory.
+\emph{Journal of Statistical Software}, 58 6, 1-34. URL: \url{http://www.jstatsoft.org/v58/i06/}.
+
 Ramsay, J.O. (2000). 
 \pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
    

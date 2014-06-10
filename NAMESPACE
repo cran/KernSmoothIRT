@@ -3,6 +3,9 @@ useDynLib(KernSmoothIRT)
 
 
 export(ksIRT, itemcor, subjscore, subjthetaML, subjscoreML, subjOCC, print.ksIRT, plot.ksIRT, subjEIS, subjETS, PCA, subjOCCDIF, subjEISDIF, subjETSDIF)
+import(Rcpp)
+importFrom(plotrix, triax.plot)
+import(rgl)
 
 
 S3method(plot, ksIRT)
