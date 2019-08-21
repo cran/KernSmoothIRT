@@ -3,7 +3,7 @@
 \docType{package}
 \title{KernSmoothIRT Package}
 \description{
-This package is meant for the graphical analysis of multiple choice test and questionnaire data within a nonparametric approach. Basically, it performs the fitting of item and options characteristic curves using kernel smoothing techniques and provides a variety of exploratory plots.
+Graphical analysis of multiple choice test and questionnaire data within a nonparametric approach. Fits item and option characteristic curves using kernel smoothing techniques and provides a variety of exploratory plots.
 }
 \details{
 \tabular{ll}{
@@ -32,6 +32,9 @@ Maintainer: Brian McGuire <mcguirebc@gmail.com>
 \emph{Journal of Statistical Software}, 58 6, 1-34. URL: \url{http://www.jstatsoft.org/v58/i06/}.
 
 Ramsay, J.O. (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
+
+Silverman, B.W. (1986). 
+\emph{Density Estimation for Statistics and Data Analysis}
 
 }

@@ -8,14 +8,13 @@ The Introductory Psychology Data
 
 }
 \description{
-These data come from a multiple-choice examination given to 379 students in an introductory course in psychology in the Christmas exam period of 1989 at McGill. 
+A multiple-choice examination given to 379 students in an introductory course in psychology in the Christmas exam period of 1989 at McGill. 
 The test consisted of 100 multiple-choice items, each having four response options. 
 
 }
 \usage{
 data(Psych101)
-Psychkey
-Psychresponses
+
 }
 \format{
 	\describe{
@@ -34,7 +33,7 @@ See \code{ksIRT()} help page for more information and examples on how to use the
 }
 \source{
 Ramsay, J.O. (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
 
 }
 
@@ -44,7 +43,7 @@ Binomial regression with monotone splines: A psychometric application.
 \emph{Journal of the American Statistical Association}, 84(408), 906-915.
 
 Ramsay, J.O. (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
 
 }
 

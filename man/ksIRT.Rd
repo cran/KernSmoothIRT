@@ -6,7 +6,7 @@
 \title{ksIRT - kernel smoothing in Item Response Theory
 }
 \description{
-This function fits nonparametric item and options characteristic curves using kernel smoothing techniques.
+Fits nonparametric item and options characteristic curves using kernel smoothing techniques.
 Within the \pkg{KernSmoothIRT} package, it provides the relevant data for the graphical analysis of multiple choice test and questionnaire data. 
 }
 \usage{
@@ -272,7 +272,7 @@ plot(BDI1, plottype="density", ylim=c(0,0.1))
 
 Ramsay, J.O. (2000). 
 \pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
-\url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+
    
  Silverman, B.W. (1986). 
  \emph{Density Estimation for Statistics and Data Analysis}. 

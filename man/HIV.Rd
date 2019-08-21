@@ -13,8 +13,7 @@ Respondents were asked how much they agreed with each of the statements on a 4-p
 }
 \usage{
 data(HIV)
-HIV
-HIVkey
+
 }
 
 \format{
@@ -47,7 +46,7 @@ Given the "negative" wording of the items \code{I2}, \code{I3}, \code{I5}, \code
 }
 \source{
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
-The whole data set can be downloaded from \url{http://caps.ucsf.edu/research/datasets/} 
+Voluntary HIV Counseling and Testing Efficacy Study (2000a,b), conducted in 1995-1997, by the Center for AIDS Prevention Studies, University of California, San Francisco.
 
 }
 

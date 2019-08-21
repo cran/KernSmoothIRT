@@ -5,7 +5,7 @@
 \title{ksIRT - kernel smoothing in Item Response Theory
 }
 \description{
-This function returns a matrix containing each subject's expected item score. The rows represent items and the columns, subjects. 
+Returns a matrix containing each subject's expected item score. The rows represent items and the columns, subjects. 
 }
 \usage{
 subjEIS(x)
@@ -24,7 +24,7 @@ a \code{ksIRT} object to be analyzed.
 
 \references{
 Ramsay, J.O. (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
    
  Silverman, B.W. (1986). 
  \emph{Density Estimation for Statistics and Data Analysis}. 

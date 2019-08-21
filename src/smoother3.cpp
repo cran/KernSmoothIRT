@@ -105,7 +105,7 @@ num[j]=exp(-1*(arg*arg)/2);
 
 else if(kerneltog==2){
 
-if(abs(arg) <= 1){ 
+if(fabs(arg) <= 1){ 
 
 num[j]=1-(arg*arg);
 
@@ -117,7 +117,7 @@ else{ num[j]= 0;}
 
 else if(kerneltog==3){
 
-if(abs(arg) <= 1){ num[j]=1;}
+if(fabs(arg) <= 1){ num[j]=1;}
 
 else{num[j]=0;}
 

@@ -7,6 +7,14 @@ import(Rcpp)
 importFrom(plotrix, triax.plot)
 import(rgl)
 
+ importFrom("grDevices", "colors")
+  importFrom("graphics", "abline", "axis", "box", "legend", "lines",
+             "par", "plot", "points", "text")
+  importFrom("stats", "aggregate", "approx", "complete.cases", "cor",
+             "density", "na.omit", "optimize", "prcomp", "qnorm",
+             "quantile", "rmultinom", "runif", "sd")
+  importFrom("utils", "alarm")
+
 
 S3method(plot, ksIRT)
 S3method(print, ksIRT)

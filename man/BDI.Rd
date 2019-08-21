@@ -14,8 +14,7 @@ The data were collected by Prof. David Zuroff.
 }
 \usage{
 data(BDI)
-BDIkey
-BDIresponses
+
 }
 
 \format{
@@ -28,7 +27,7 @@ BDIresponses
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
 
 Ramsay JO (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
 }
 
 

@@ -5,7 +5,7 @@
 \title{ksIRT - kernel smoothing in Item Response Theory
 }
 \description{
-This function returns a list containing a matrix for each item. Each matrix in the list contains a row for each option with each column representing a subject with the probability of selecting that option for each subject. 
+Returns a list containing a matrix for each item. Each matrix in the list contains a row for each option with each column representing a subject with the probability of selecting that option for each subject. 
 }
 \usage{
 subjOCC(x, stype = c("ObsScore","ExpectedScore","MLScore","Theta","MLTheta"))
@@ -28,7 +28,7 @@ the scale on which to evaluate each subject. \code{stype = "ObsScore"} uses the 
 
 \references{
 Ramsay, J.O. (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
    
  Silverman, B.W. (1986). 
  \emph{Density Estimation for Statistics and Data Analysis}. 

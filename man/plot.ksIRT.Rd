@@ -131,7 +131,7 @@ No values are returned from the plot function.
 \emph{Journal of Statistical Software}, 58 6, 1-34. URL: \url{http://www.jstatsoft.org/v58/i06/}.
 
 Ramsay, J.O. (2000). 
-\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. \url{http://www.psych.mcgill.ca/faculty/ramsay/ramsay.html}.
+\pkg{TestGraf}: A program for the graphical analysis of multiple choice test and questionnaire data. 
    
 }
 
