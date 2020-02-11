@@ -37,7 +37,7 @@ Inputcheck<-function(responses,key,format,itemlabels,weights,miss,evalpoints,ban
 		}
 	}
 	if(!is.null(weights)){
-		if(class(weights)!="list" | length(weights) != nitem | nrow(weights[[2]])!=2){
+		if(!is(weights,"list") | length(weights) != nitem | nrow(weights[[2]])!=2){
 		
 			return('weights must be a list of length n items. Each list element must have two rows. The first row is the response, the second row is the weight')
 	

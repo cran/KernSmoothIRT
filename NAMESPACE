@@ -6,6 +6,7 @@ export(ksIRT, itemcor, subjscore, subjthetaML, subjscoreML, subjOCC, print.ksIRT
 import(Rcpp)
 importFrom(plotrix, triax.plot)
 import(rgl)
+importFrom("methods", "is")
 
  importFrom("grDevices", "colors")
   importFrom("graphics", "abline", "axis", "box", "legend", "lines",

@@ -16,7 +16,7 @@ bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("nor
 	if(is.null(evalpoints) & is.null(nevalpoints)){nevalpoints <- 51}
 	else if(is.null(nevalpoints)){nevalpoints <- length(evalpoints)}
 	
-	if(class(responses) == "list") responses = do.call(cbind,responses)
+	if(is(responses,"list")) responses = do.call(cbind,responses)
 	responses <- as.matrix(responses)
 	
 	kernel <- match.arg(arg = kernel, choices = c("gaussian","quadratic","uniform"))
