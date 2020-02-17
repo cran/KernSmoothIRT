@@ -1,7 +1,8 @@
 ksIRT <-
 function(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels, weights, 
 miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, evalpoints, nevalpoints, 
-bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("norm",0,1), groups = FALSE){
+bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("norm",0,1), groups = FALSE,
+nsubj){
 
 	if(missing(key)) key <- NULL
 	if(missing(itemlabels)) itemlabels <- NULL
@@ -10,6 +11,7 @@ bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("nor
 	if(missing(SubRank)) SubRank <- NULL
 	if(missing(nevalpoints)) nevalpoints <- NULL
 	if(missing(format)) format <- NULL
+	if(missing(nsubj)) nsubj <- NULL
 	
 
 	
@@ -31,14 +33,16 @@ bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("nor
 		responses <- na.omit(responses)
 	}
 
-	nsubj <- nrow(responses);
+	if(is.null(nsubj)) nsubj <- nrow(responses);
 	nitem<-ncol(responses);
 	
 	if(length(key) == 1){key <- rep(key, nitem)}
 
-	Check<-Inputcheck(responses,key,format,itemlabels,weights,miss,evalpoints,bandwidth,nitem,nsubj,kernel,NAweight,nevalpoints,thetadist,groups,SubRank)
-	## Make sure input variables are specified correctly or return a message
-	if(Check!="NoErr"){stop(Check)}
+	if(!is.logical(groups)){
+    	Check<-Inputcheck(responses,key,format,itemlabels,weights,miss,evalpoints,bandwidth,nitem,nsubj,kernel,NAweight,nevalpoints,thetadist,groups,SubRank)
+    	## Make sure input variables are specified correctly or return a message
+    	if(Check!="NoErr"){stop(Check)}
+	}
 
 
 	## Determine type of response for each item.
@@ -220,9 +224,16 @@ bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, thetadist = list("nor
 	## Perform DIF analysis if specified.
 	if(groups[1]==FALSE){DIF<-FALSE; grps<-NULL;}
 	else{
+	    if(is.null(SubRank)) {
+	        rankscores<-rank(apply(optitwgtresp[,-c(1:3)],2,APPLYFUN,RankFun,optitwgtresp[,3]),ties.method="first")
+	    } 
+	    else{
+	        rankscores <- SubRank
+	    }
 		grps<-unique(groups)
 		## Recursive call for each of the groups.
-		DIF<-lapply(grps,function(x)ksIRT(responses=responses[which(groups==x),],key=key,format=format,kernel=kernel,itemlabels=itemlabels,weights=weights,miss=miss,NAweight=NAweight,evalpoints=evalpoints,nevalpoints=nevalpoints,bandwidth=bandwidth,thetadist=thetadist,groups=FALSE))
+		DIF<-lapply(grps,function(x)ksIRT(responses=responses[which(groups==x),],key=key,format=format,kernel=kernel,itemlabels=itemlabels,weights=weights,miss=miss,NAweight=NAweight,evalpoints=evalpoints,nevalpoints=nevalpoints,bandwidth=bandwidth,thetadist=thetadist,groups=FALSE,SubRank=rankscores[which(groups==x)],
+		                                  nsubj=nsubj))
 
 	}
 	

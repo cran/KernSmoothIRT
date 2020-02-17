@@ -1,4 +1,4 @@
-d44c83082060a3515e602d89ef24d2d4 *DESCRIPTION
+d031c1f2e3bc045b5eeed8ed840a8e2e *DESCRIPTION
 5d02831b208422ca56a16d938b912bec *NAMESPACE
 2e332be74e4a12b5a6bd0c7fc37114a3 *R/CV.R
 64586828d7c8263ac1c4fc11a915da8c *R/Credplot.R
@@ -21,7 +21,7 @@ bb6b06cf4c2ec575a5afc446bb469019 *R/getLik.R
 4c0ef0883f4a01f7307a3dd54bd0a615 *R/getweight.R
 d63f10d2e1f37e89b308ec161163216c *R/handlemiss.R
 0842d1c7cc0c6fdcb1b2fdfcf11b6925 *R/itemcor.R
-618873d9abc6c4e1408410c0c9448f2c *R/ksIRT.R
+620c9709b4f2a9624565b3a82732f793 *R/ksIRT.R
 3416faa38c5ce23ab1f832a7bdf32804 *R/make_mat2.R
 723e8bf78a91dec17e45a4210af96e4e *R/plot.ksIRT.R
 d55c2d5919e5de4ad7d49f41d14babc2 *R/print.ksIRT.R
@@ -38,8 +38,11 @@ b52a3ef42062fc821bc1b0beeca698ba *R/subjOCC.R
 eaadda5cc376ef81552e127e08b73d46 *R/subjscoreML.R
 dc7f12bae2efa38761b94ee1f29a27f2 *R/subjthetaML.R
 0c1c8f8f515e497e9926b899e9c83774 *data/BDI.rda
+0c1c8f8f515e497e9926b899e9c83774 *data/BDI_1.rda
 645fcf50496789351d012c4a064e34bb *data/HIV.rda
+645fcf50496789351d012c4a064e34bb *data/HIV_1.rda
 e5d0849bf2d60b45041be2daf3a0a952 *data/Psych101.rda
+e5d0849bf2d60b45041be2daf3a0a952 *data/Psych101_1.rda
 744483981c7f1226d887c34397b04095 *inst/CITATION
 8ec9a823f5c8662ae0739f4a919a89c5 *man/BDI.Rd
 e9e5269a3b066a80c8a3d2337e1fd80e *man/HIV.Rd
@@ -47,7 +50,7 @@ d0dfc2b9e2598902625eafbd28eee9be *man/KernSmoothIRT-package.Rd
 fda36c470f8f6a3d8c46de8744740fa8 *man/PCA.Rd
 83aabc5c5216687525828f6bca795728 *man/Psych101.Rd
 65a9bc2de8c2590fa1849bd203bb0d3b *man/itemcor.Rd
-62321ff6c626948e73137f6096ba2e9f *man/ksIRT.Rd
+ba4e958a1c9a05eb5670ff08bf8b3c64 *man/ksIRT.Rd
 88abdf56f727eae013838ba07c1fae17 *man/plot.ksIRT.Rd
 51833b451bb3b2ce2c45496b237ca361 *man/subjEIS.Rd
 2064f31a7106e2700474fc4db6ceada4 *man/subjEISDIF.Rd

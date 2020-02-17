@@ -13,7 +13,7 @@ Within the \pkg{KernSmoothIRT} package, it provides the relevant data for the gr
 ksIRT(responses, key, format, kernel = c("gaussian","quadratic","uniform"), itemlabels,
 weights,miss = c("option","omit","random.multinom","random.unif"), NAweight = 0, 
 evalpoints, nevalpoints, bandwidth = c("Silverman","CV"), RankFun = "sum", SubRank, 
-thetadist = list("norm",0,1), groups = FALSE)
+thetadist = list("norm",0,1), groups = FALSE, nsubj)
 
 \method{print}{ksIRT}(x,...)
 }
@@ -110,6 +110,10 @@ The other elements of the list should be the distribution parameters as required
 \item{groups}{
 an optional vector of length equal to the number of subjects containing the group designation of each subject. Adding this option allows for comparisons between groups using the Differential Item Functioning tools (see details section).
 
+}
+
+\item{nsubj}{
+an optional numeric value with the number of subjects.
 }
 
 \item{x}{
